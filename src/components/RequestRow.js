@@ -29,7 +29,7 @@ class RequestRow extends React.Component {
                 <Cell>
                     <Button color="teal" 
                         onClick={ async () => await this.props.onFinalize(id)}
-                        disabled={(request.approvalCount / request.approversCount) <= 0.5}>
+                        disabled={(request.approvalCount / request.approversCount) < 0.5}>
                         Finalize
                     </Button>
                 </Cell>
