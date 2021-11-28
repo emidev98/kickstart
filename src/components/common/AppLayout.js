@@ -1,5 +1,5 @@
 import React from 'react';
-import AppHeader from './AppHeader';
+import AppMenu from './AppMenu';
 import { Container } from 'semantic-ui-react';
 import Head from 'next/head';
 
@@ -11,7 +11,11 @@ class AppLayout extends React.Component {
                 <Head>
                     <link async rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2/dist/semantic.min.css"/>
                 </Head>
-                <AppHeader/>
+                <AppMenu backRoute={this.props.backRoute}
+                    pageTitle={this.props.pageTitle}
+                    nextRouteDescription={this.props.nextRouteDescription}
+                    nextRoute={this.props.nextRoute}
+                    nextRouteIcon={this.props.nextRouteIcon}/>
                 {this.props.children}
             </Container>
         );

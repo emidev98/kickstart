@@ -22,7 +22,7 @@ beforeEach(async () =>{
             gasPrice: '10000000'
          });
     
-    await factory.methods.createCampaign('100')
+    await factory.methods.createCampaign('100', "Build a spaceship")
         .send({ 
             from: accounts[0],
             gas:'2000000',
@@ -76,7 +76,7 @@ describe('Campaigns', () => {
 
     it('allows a manager to make a payment request', async () =>{
         await campaign.methods
-            .createRequest('Buy something', '100', accounts[1])
+            .createRequest('Buy the rocket', '100', accounts[1])
             .send({
                 from: accounts[0], 
                 gas:'2000000',
@@ -85,7 +85,7 @@ describe('Campaigns', () => {
 
         const request = await campaign.methods.requests(0).call();
         
-        assert.strictEqual('Buy something', request.description);
+        assert.strictEqual('Buy the rocket', request.description);
         assert.strictEqual('100', request.value);
         assert.strictEqual(accounts[1], request.recipient);
         assert.strictEqual(false, request.complete);

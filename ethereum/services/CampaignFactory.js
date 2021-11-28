@@ -6,8 +6,18 @@ class CampaignFactory {
     static getCampingFactory = () => {
         const contractInterface = JSON.parse(CampaignFactoryJson.interface);
 
-        const address = '0x2FB76d172464110808c1cF0191bD0b05dAc806b9';
+        const address = '0x5a3a8465410E9523cB965f31997E82cFECd2ea56';
         return new web3.eth.Contract(contractInterface, address);
+    }
+
+    static createCamping = async (minimumContribution, title) => {
+        const accounts = await web3.eth.getAccounts();
+        const campaignFactory = CampaignFactory.getCampingFactory();
+        return campaignFactory.methods
+            .createCampaign(web3.utils.toWei(minimumContribution, "ether"), title)
+            .send({
+                from: accounts[0]
+            });
     }
 }
 

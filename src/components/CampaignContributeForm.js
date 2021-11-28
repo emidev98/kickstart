@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input, Form, Button, Message, Icon } from 'semantic-ui-react';
-import web3 from '../ethereum/web3';
-import CampaignService from '../ethereum/services/CampaignService';
-import { Router } from '../routes';
+import web3 from '../../ethereum/web3';
+import CampaignService from '../../ethereum/services/CampaignService';
+import { Router } from '../../routes';
 
 class CampaignContributeFrom extends React.Component {
     state = {

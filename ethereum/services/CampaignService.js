@@ -23,10 +23,19 @@ class CampaignService {
             balance: summary[1],
             requestsCount: summary[2],
             approversCount: summary[3],
-            manager: summary[4]
+            manager: summary[4],
+            title: summary[5]
         };
-
+        
         return CampaignService.summary;
+    }
+
+    static getCampingsSummary = async (addresses) => {
+        return await Promise.all(
+            addresses.map((address) => {
+                return CampaignService.getCampingSummary(address);
+            })
+        );
     }
 
     static getCampingRequests = async (address) => {

@@ -1,10 +1,8 @@
 import React from "react";
-import AppLayout from "../../../components/AppLayout";
+import AppLayout from "../../../components/common/AppLayout";
 import { Button, Icon, Menu, Table } from "semantic-ui-react";
-import { Router } from "../../../routes";
-import web3 from "../../../ethereum/web3";
-import CampaignService from "../../../ethereum/services/CampaignService";
-import { Link } from "../../../routes";
+import CampaignService from "../../../../ethereum/services/CampaignService";
+import { Link, Router } from "../../../../routes";
 import RequestRow from "../../../components/RequestRow";
 const { Header, Row, HeaderCell, Body } = Table;
 
@@ -62,26 +60,11 @@ class Requests extends React.Component {
 
     render() {
         return (    
-            <AppLayout>
-                <Menu borderless={true}
-                    style={{ border: "none", boxShadow: "none" }}>
-                    <Menu.Menu position="left"
-                        style={{display: "flex", alignItems: "center"}}>
-                        <Link route={`/campaigns/${this.props.address}`}>
-                            <Icon style={{ marginBottom: "2px", cursor: "pointer"}} name="arrow left"></Icon>
-                        </Link>
-                        <h3 style={{marginTop: 0, marginLeft: "0.5em"}}>Campaign requests</h3>
-                    </Menu.Menu>
-
-                    <Menu.Menu position="right">
-                        <Link route={`/campaigns/${this.props.address}/requests/new`}>
-                            <Button primary fluid>
-                                <Icon name="plus"/>
-                                Request
-                            </Button>
-                        </Link>
-                    </Menu.Menu>
-                </Menu>
+            <AppLayout backRoute={`/campaigns/${this.props.address}`}
+                pageTitle="Back to campaign"
+                nextRouteDescription="Request"
+                nextRoute={`/campaigns/${this.props.address}/requests/new`}
+                nextRouteIcon="add">
                 {this.renderRequestsTable()}
             </AppLayout>
         );
