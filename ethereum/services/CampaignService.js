@@ -3,31 +3,26 @@ import Campaign from '../build/Campaign.json';
 
 class CampaignService {
 
-    campaign = {}
-    summary = {}
     requests = []
 
     static getCamping = (address) => {
         const contractInterface = JSON.parse(Campaign.interface);
-        CampaignService.campaign = new web3.eth.Contract(contractInterface, address);
-        return CampaignService.campaign;
+        return new web3.eth.Contract(contractInterface, address);
     }
 
     static getCampingSummary = async (address) => {
-        CampaignService.campaign = await CampaignService.getCamping(address);
-        const summary = await CampaignService.campaign.methods.getSummary().call();
+        const campaign = await CampaignService.getCamping(address);
+        const summary = await campaign.methods.getSummary().call();
         
-        CampaignService.summary = {
-            campaign: CampaignService.campaign,
+        return {
+            campaign: campaign,
             minimumContribution: summary[0],
             balance: summary[1],
             requestsCount: summary[2],
             approversCount: summary[3],
             manager: summary[4],
             title: summary[5]
-        };
-        
-        return CampaignService.summary;
+        }
     }
 
     static getCampingsSummary = async (addresses) => {
@@ -42,6 +37,7 @@ class CampaignService {
         const campaign = await CampaignService.getCamping(address);
         const approversCount = await campaign.methods.approversCount().call();
         const requestCount = await campaign.methods.getRequestCount().call();
+
         const requests = await Promise.all(
             Array(parseInt(requestCount))
                 .fill()
@@ -50,7 +46,7 @@ class CampaignService {
                 })
         );
         
-        CampaignService.requests = requests
+        return requests
             .map((request) => {
                 return {
                     description: request[0],
@@ -61,23 +57,23 @@ class CampaignService {
                     approversCount: approversCount
                 };
             });
-        
-        return CampaignService.requests;
     }
 
     static approveRequest = async (address, index) => {
         const accounts = await web3.eth.getAccounts();
         const campign = await CampaignService.getCamping(address);
+        
         return campign.methods
-            .approveRequest(index)
+            .approveRequest(parseInt(index))
             .send({ from : accounts[0] });
     }
 
     static finalizeRequest = async (address, index) => {
         const accounts = await web3.eth.getAccounts();
         const campign = await CampaignService.getCamping(address);
+
         return campign.methods
-            .finalizeRequest(index)
+            .finalizeRequest(parseInt(index))
             .send({ from : accounts[0] });
     }
 }

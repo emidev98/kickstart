@@ -20,7 +20,7 @@ class Requests extends React.Component {
     };
 
     onFinalize = async (index) => {
-        await CampaignService.approveRequest(this.props.address, index);
+        await CampaignService.finalizeRequest(this.props.address, index);
         Router.replaceRoute(`/campaigns/${this.props.address}/requests`);
     };
 
@@ -33,7 +33,7 @@ class Requests extends React.Component {
                         <HeaderCell>Description</HeaderCell>
                         <HeaderCell>Value (ether)</HeaderCell>
                         <HeaderCell>Recipient</HeaderCell>
-                        <HeaderCell>Approval Count</HeaderCell>
+                        <HeaderCell>Approvals</HeaderCell>
                         <HeaderCell>Approve</HeaderCell>
                         <HeaderCell>Finalize</HeaderCell>
                     </Row>

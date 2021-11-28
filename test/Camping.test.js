@@ -128,4 +128,5 @@ describe('Campaigns', () => {
 
         assert(balance > 104)
     })
+
 });
