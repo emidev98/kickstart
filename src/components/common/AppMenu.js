@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Icon, Menu } from "semantic-ui-react";
 import { Link } from "../../../routes";
+import CampaignFactory from "../../../ethereum/services/CampaignFactory";
 
 class AppMenu extends React.Component {
 
@@ -27,6 +28,14 @@ class AppMenu extends React.Component {
                             Campaign
                         </a>
                     </Link>
+                    <a className="item" href="https://github.com/decentryfi/kickstart" target="_blank">
+                        <Icon name="github"/>
+                        Source
+                    </a>
+                    <a className="item" href={`https://rinkeby.etherscan.io/address/${CampaignFactory.address}`} target="_blank">
+                        <Icon name="ethereum"/>
+                        Contract
+                    </a>
                 </Menu.Menu>
             </Menu>
 
