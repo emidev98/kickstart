@@ -1,5 +1,5 @@
-import web3 from '../web3';
-import Campaign from '../build/Campaign.json';
+import web3 from "../web3";
+import Campaign from "../build/Campaign.json";
 
 class CampaignService {
 
@@ -22,7 +22,7 @@ class CampaignService {
             approversCount: summary[3],
             manager: summary[4],
             title: summary[5]
-        }
+        };
     }
 
     static getCampingsSummary = async (addresses) => {

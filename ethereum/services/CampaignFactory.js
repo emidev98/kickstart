@@ -1,9 +1,9 @@
 import web3 from "../web3";
-import CampaignFactoryJson from '../build/CampaignFactory.json';
+import CampaignFactoryJson from "../build/CampaignFactory.json";
 
 class CampaignFactory {
 
-    static address = '0x5a3a8465410E9523cB965f31997E82cFECd2ea56';
+    static address = "0x5a3a8465410E9523cB965f31997E82cFECd2ea56";
 
     static getCampingFactory = () => {
         const contractInterface = JSON.parse(CampaignFactoryJson.interface);

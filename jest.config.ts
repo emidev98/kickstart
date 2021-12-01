@@ -1,8 +1,10 @@
-import type {Config} from '@jest/types';
+import type { Config } from "@jest/types";
 
 const config: Config.InitialOptions = {
   verbose: true,
-  testMatch : ["**/test/eth/**.test.js"]
+  preset: "ts-jest",
+  testEnvironment: "node",
+  testMatch: ["**/test/eth/**.test.ts"]
 };
 
 export default config;
