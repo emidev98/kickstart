@@ -1,21 +1,19 @@
 import Web3 from "web3";
 
 let web3;
-const isMetamaskAvailable = (<any> window).ethereum !== undefined;
+const isMetamaskAvailable = (<any>window).ethereum !== undefined;
 
-// If ethereum object exists on window object 
+// If ethereum object exists on window object
 // is because Metamask injected it.
 if (isMetamaskAvailable) {
-  (<any> window).ethereum.request({ method: "eth_requestAccounts" });
-  web3 = new Web3((<any> window).ethereum);
-} 
-// Otherwise we create our own provider for the 
+	(<any>window).ethereum.request({ method: "eth_requestAccounts" });
+	web3 = new Web3((<any>window).ethereum);
+}
+// Otherwise we create our own provider for the
 // user to at least be able to view the data
 else {
-  const provider = new Web3.providers.HttpProvider(
-    process.env["PROVIDER_URL"]
-  );
-  web3 = new Web3(provider);
+	const provider = new Web3.providers.HttpProvider(process.env["PROVIDER_URL"]);
+	web3 = new Web3(provider);
 }
 
 export default web3;

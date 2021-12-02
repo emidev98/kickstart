@@ -1,0 +1,15 @@
+nav .brand-logo {
+    display: flex;
+    align-items: center;
+    height: inherit;
+
+    img {
+        width: 46px;
+        height: 46px;
+        margin: 0 0.5em;
+    }
+
+    h5 {
+        margin: 0;
+    }
+}
