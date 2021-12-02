@@ -1,3 +1,13 @@
 @import "assets/variables";
 @import "~material-icons/iconfont/material-icons";
 @import "~materialize-css/sass/materialize";
+
+body {
+    background-color: #334355;
+    color: $text-color;
+    background-attachment: fixed;
+    background-image: url("./assets/img/background.svg");
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}

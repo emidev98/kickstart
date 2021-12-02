@@ -1,16 +1,17 @@
-import web3 from "../web3";
-import Campaign from "../build/Campaign.json";
+import web3 from "./web3";
+import Campaign from "../eth-interfaces/Campaign.json";
+import { ICampaign } from "../models/ICampaign";
 
 class CampaignService {
 	requests = [];
 
-	static getCamping = (address) => {
+	static getCamping = (address: string) => {
 		const contractInterface = JSON.parse(Campaign.interface);
 		return new web3.eth.Contract(contractInterface, address);
 	};
 
-	static getCampingSummary = async (address) => {
-		const campaign = await CampaignService.getCamping(address);
+	static getCampingSummary = async (address: string) => {
+		const campaign = CampaignService.getCamping(address);
 		const summary = await campaign.methods.getSummary().call();
 
 		return {
@@ -24,22 +25,22 @@ class CampaignService {
 		};
 	};
 
-	static getCampingsSummary = async (addresses) => {
-		return await Promise.all(
+	static getCampingsSummary: (addresses: Array<string>) => Promise<Array<ICampaign>> = (addresses) => {
+		return Promise.all(
 			addresses.map((address) => {
 				return CampaignService.getCampingSummary(address);
 			})
 		);
 	};
 
-	static getCampingRequests = async (address) => {
-		const campaign = await CampaignService.getCamping(address);
+	static getCampingRequests = async (address: string) => {
+		const campaign = CampaignService.getCamping(address);
 		const approversCount = await campaign.methods.approversCount().call();
 		const requestCount = await campaign.methods.getRequestCount().call();
 
 		const requests = await Promise.all(
 			Array(parseInt(requestCount))
-				.fill()
+				.fill(null)
 				.map((request, index) => {
 					return campaign.methods.requests(index).call();
 				})
@@ -57,16 +58,16 @@ class CampaignService {
 		});
 	};
 
-	static approveRequest = async (address, index) => {
+	static approveRequest = async (address: string, index: string) => {
 		const accounts = await web3.eth.getAccounts();
-		const campign = await CampaignService.getCamping(address);
+		const campign = CampaignService.getCamping(address);
 
 		return campign.methods.approveRequest(parseInt(index)).send({ from: accounts[0] });
 	};
 
-	static finalizeRequest = async (address, index) => {
+	static finalizeRequest = async (address: string, index: string) => {
 		const accounts = await web3.eth.getAccounts();
-		const campign = await CampaignService.getCamping(address);
+		const campign = CampaignService.getCamping(address);
 
 		return campign.methods.finalizeRequest(parseInt(index)).send({ from: accounts[0] });
 	};

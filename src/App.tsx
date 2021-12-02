@@ -8,10 +8,6 @@ import NewCampaign from "./pages/NewCampaign/NewCampaign";
 import AppNavbar from "./components/AppNavbar/AppNavbar";
 
 class App extends React.Component {
-	componentDidMount = () => {
-		// Hello
-	};
-
 	render = () => {
 		return (
 			<div>

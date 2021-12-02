@@ -1,7 +1,8 @@
 import "./AppNavbar.scss";
 import React from "react";
-import { Icon, Navbar, NavItem } from "react-materialize";
-import { Link } from "react-router-dom";
+import { Icon, Navbar } from "react-materialize";
+import { NavLink } from "react-router-dom";
+import logo from "./../../assets/img/logo.png";
 
 class AppNavbar extends React.Component {
 	componentDidMount = () => {
@@ -10,8 +11,8 @@ class AppNavbar extends React.Component {
 
 	renderBrand = () => {
 		return (
-		  <a href="https://www.decentryfi.xyz">
-				<img src="https://raw.githubusercontent.com/decentryfi/styleguide/9ccef39168afa50a53ad56e1c8f6d32c0ccf29a0/logos/secondary-transparent.png" />
+			<a href="https://www.decentryfi.xyz">
+				<img src={logo} />
 				<h5>Kickstart</h5>
 			</a>
 		);
@@ -20,14 +21,14 @@ class AppNavbar extends React.Component {
 	render = () => {
 		return (
 			<Navbar alignLinks="right" brand={this.renderBrand()} menuIcon={<Icon>menu</Icon>}>
-				<Link to="/">
+				<NavLink to="/">
 					<Icon>list</Icon>
 					<span>Campaigns</span>
-				</Link>
-				<Link to="/campaigns/new">
+				</NavLink>
+				<NavLink to="/campaigns/new">
 					<Icon>add</Icon>
 					<span>New</span>
-				</Link>
+				</NavLink>
 			</Navbar>
 		);
 	};

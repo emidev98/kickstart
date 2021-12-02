@@ -1,15 +1,45 @@
-nav .brand-logo {
-    display: flex;
-    align-items: center;
-    height: inherit;
+@import "./../../assets/variables.scss";
 
-    img {
-        width: 46px;
-        height: 46px;
-        margin: 0 0.5em;
+nav {
+
+    .brand-logo,
+    li a {
+        color: $text-color;
+        display: flex;
+        align-items: center;
+        height: inherit;
+        padding: 0 0.5em;
+        transition: background-color .3s;
+
+        &:active{
+            color: #ffffff;
+        }
+
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            width: 46px;
+            height: 46px;
+            margin-right: 0.5em;
+        }
+
+        h5 {
+            margin: 0;
+        }
+
+        i {
+            margin-right: 0.5em;
+        }
+
+        &[aria-current=page]{
+            color: white;
+        }
     }
 
-    h5 {
-        margin: 0;
+    a {
+        color: $text-color;
+    
     }
 }

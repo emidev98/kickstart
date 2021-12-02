@@ -1,8 +1,9 @@
 import path from "path";
-import fs from "fs";
+import fs from "fs-extra";
 const solc = require("solc");
 
 const buildPath = path.resolve(__dirname, "build");
+const uiPath = path.resolve(__dirname, "./../src/eth-interfaces");
 
 try {
 	console.log("Start contract compilation");
@@ -23,6 +24,12 @@ try {
 
 		fs.writeFileSync(fileName, JSON.stringify(contractObject));
 	}
+
+	fs.rmdirSync(uiPath, { recursive: true });
+	fs.mkdirSync(uiPath);
+	fs.copySync(buildPath, uiPath);
+
+	console.log("UI interfaces updated");
 
 	console.log("Contract compiled successfully");
 } catch (e) {

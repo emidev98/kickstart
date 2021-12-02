@@ -6,5 +6,5 @@
     "singleQuote": false,
     "trailingComma": "none",
     "jsxBracketSameLine": true,
-    "arrowPArens" : "always"
+    "arrowParens" : "always"
 }
