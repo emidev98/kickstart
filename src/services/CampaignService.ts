@@ -15,6 +15,7 @@ class CampaignService {
 		const summary = await campaign.methods.getSummary().call();
 
 		return {
+			address: campaign.options.address,
 			campaign: campaign,
 			minimumContribution: summary[0],
 			balance: summary[1],

@@ -11,10 +11,10 @@ class AppNavbar extends React.Component {
 
 	renderBrand = () => {
 		return (
-			<a href="https://www.decentryfi.xyz">
+			<NavLink to="/">
 				<img src={logo} />
 				<h5>Kickstart</h5>
-			</a>
+			</NavLink>
 		);
 	};
 

@@ -8,7 +8,6 @@ nav {
         display: flex;
         align-items: center;
         height: inherit;
-        padding: 0 0.5em;
         transition: background-color .3s;
 
         &:active{
@@ -32,10 +31,15 @@ nav {
         i {
             margin-right: 0.5em;
         }
+    }
 
-        &[aria-current=page]{
-            color: white;
-        }
+    li a[aria-current=page]{
+        color: white;
+    }
+
+    .brand-logo { 
+        padding: 0 15px;
+
     }
 
     a {

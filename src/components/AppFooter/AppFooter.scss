@@ -1,0 +1,40 @@
+@import "./../../assets/variables.scss";
+
+.page-footer {
+    padding: 0;
+    
+    .container {    
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: inherit;
+        color: $text-color;
+
+        a.decentryFi {
+            display: flex;
+            align-items: center;
+
+            &:hover{
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            img {
+                width: 24px;
+                margin-right: 0.5em;
+            }
+        }
+    }
+
+    a {
+        color: $text-color;
+    
+    }
+
+    >.container {
+        display: none;
+    }
+
+    .footer-copyright {
+        padding: 0;
+    }
+}
