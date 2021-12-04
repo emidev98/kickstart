@@ -1,0 +1,57 @@
+[
+	{
+		"name": "Ethereum",
+		"url": "https://mainnet.infura.io/v3/116afe93e3a84a5390ec6e3bea6340e4",
+		"contractExplorer": "https://etherscan.io/",
+		"contractAddress": "",
+		"currency": "ether",
+		"chainId": "1",
+		"icon": "ethereum"
+	},
+	{
+		"name": "Ethereum Rinkeby",
+		"url": "https://rinkeby.infura.io/v3/116afe93e3a84a5390ec6e3bea6340e4",
+		"contractExplorer": "https://rinkeby.etherscan.io/",
+		"contractAddress": "0x5a3a8465410E9523cB965f31997E82cFECd2ea56",
+		"currency": "ether",
+		"chainId": "4",
+		"icon": "ethereum",
+		"selected": true
+	},
+	{
+		"name": "HarmonyOne",
+		"url": "https://api.harmony.one",
+		"contractExplorer": "https://explorer.harmony.one/",
+		"contractAddress": "",
+		"currency": "one",
+		"chainId": "1666600000",
+		"icon": "harmony"
+	},
+	{
+		"name": "HarmonyOne Testnet",
+		"url": "https://api.s0.b.hmny.io",
+		"contractExplorer": "https://explorer.pops.one/",
+		"contractAddress": "0x1c8c25ac9637dadf7ea6e43ba6a588ecc4f0187a",
+		"currency": "one",
+		"chainId": "1666700000",
+		"icon": "harmony"
+	},
+	{
+		"name": "Matic",
+		"url": "https://rpc-mainnet.maticvigil.com/",
+		"contractExplorer": "https://explorer.matic.network/",
+		"contractAddress": "",
+		"currency": "Matic",
+		"chainId": "137",
+		"icon": "matic"
+	},
+	{
+		"name": "Matic Mumbai",
+		"url": "https://rpc-mumbai.maticvigil.com/",
+		"contractExplorer": "https://mumbai.polygonscan.com/",
+		"contractAddress": "0x92cA7C04280e4F8C0AC2aCB97799eBB94f7b9174",
+		"currency": "Matic",
+		"chainId": "80001",
+		"icon": "matic"
+	}
+]

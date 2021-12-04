@@ -30,38 +30,47 @@ class Campaigns extends React.Component {
 								<p className="address">{campaignSummary.address}</p>
 							</div>
 							<ul className="collection-right">
-								<Link to={`/campaigns/${campaignSummary.address}`}
-									className="collection-list-item">
-									<Button tooltip="Check the most important details of this specific campaign"
+								<Link to={`/campaigns/${campaignSummary.address}`} className="collection-list-item">
+									<Button
+										tooltip="Check the most important details of this specific campaign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
-										}}>
+										}}
+									>
 										<i className="material-icons">info_outline</i>
 									</Button>
 								</Link>
 
-								<Link to={`/campaigns/${campaignSummary.address}/requests`}
-									className="collection-list-item">
-									<Button tooltip="Check the requests that the manager has open for the campign"
+								<Link
+									to={`/campaigns/${campaignSummary.address}/requests`}
+									className="collection-list-item"
+								>
+									<Button
+										tooltip="Check the requests that the manager has open for the campign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
-										}}>
+										}}
+									>
 										<i className="material-icons">list_alt</i>
 									</Button>
 								</Link>
 
-								<Link to={`/campaigns/${campaignSummary.address}/requests/new`}
-									className="collection-list-item">
-									<Button tooltip="Add a new request to the campaign"
+								<Link
+									to={`/campaigns/${campaignSummary.address}/requests/new`}
+									className="collection-list-item"
+								>
+									<Button
+										tooltip="Add a new request to the campaign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
-										}}>
+										}}
+									>
 										<i className="material-icons">playlist_add_circle</i>
 									</Button>
 								</Link>

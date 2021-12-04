@@ -1,5 +1,5 @@
 import web3 from "./web3";
-import Campaign from "../eth-interfaces/Campaign.json";
+import Campaign from "../contracts-interfaces/Campaign.json";
 import { ICampaign } from "../models/ICampaign";
 
 class CampaignService {

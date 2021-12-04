@@ -3,7 +3,7 @@ import fs from "fs-extra";
 const solc = require("solc");
 
 const buildPath = path.resolve(__dirname, "build");
-const uiPath = path.resolve(__dirname, "./../src/eth-interfaces");
+const uiPath = path.resolve(__dirname, "./../src/contracts-interfaces");
 
 try {
 	console.log("Start contract compilation");
@@ -11,7 +11,7 @@ try {
 	fs.rmdirSync(buildPath, { recursive: true });
 	fs.mkdirSync(buildPath);
 
-	const campaignPath = path.resolve(__dirname, "contracts", "Campaign.sol");
+	const campaignPath = path.resolve(__dirname, "Campaign.sol");
 	const source = fs.readFileSync(campaignPath, "utf-8");
 	const output = solc.compile(source, 1).contracts;
 

@@ -1,7 +1,7 @@
 import ganache from "ganache-core";
 import Web3 from "web3";
-import compiledFactory from "../../ethereum/build/CampaignFactory.json";
-import compiledCampaing from "../../ethereum/build/Campaign.json";
+import compiledFactory from "../../contracts/build/CampaignFactory.json";
+import compiledCampaing from "../../contracts/build/Campaign.json";
 
 const web3 = new Web3(ganache.provider() as any);
 

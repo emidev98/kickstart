@@ -1,4 +1,5 @@
 @import "./../../assets/variables.scss";
+@import "./../../assets/icons.scss";
 
 nav {
 
@@ -10,18 +11,12 @@ nav {
         height: inherit;
         transition: background-color .3s;
 
-        &:active{
-            color: #ffffff;
-        }
-
-        &:hover{
+        &:hover {
             background-color: rgba(0, 0, 0, 0.1);
         }
-
-        img {
-            width: 46px;
-            height: 46px;
-            margin-right: 0.5em;
+        
+        &[aria-current=page]{
+            color: white;
         }
 
         h5 {
@@ -30,20 +25,51 @@ nav {
 
         i {
             margin-right: 0.5em;
+            
+            &:last-child{
+                margin-right: 0;
+            }
         }
-    }
-
-    li a[aria-current=page]{
-        color: white;
     }
 
     .brand-logo { 
         padding: 0 15px;
+        color: white;
 
+        img {
+            width: 46px;
+            height: 46px;
+            margin-right: 0.5em;
+        }
     }
-
-    a {
-        color: $text-color;
     
+    #more-options-dropdown,
+    #change-network-dropdown {
+        top: -4px;
+        height: auto !important;
+        
+        a {
+            display: flex;
+            
+            .network-logo {
+                width: 24px;
+                height: 24px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+                margin-right: 1em;
+    
+            }
+        }
+    }
+}
+
+#mobile-nav{
+
+    #sidenav-more-options-dropdown,
+    #sidenav-change-network-dropdown {
+        background: white;
+        box-shadow: none;
+
     }
 }

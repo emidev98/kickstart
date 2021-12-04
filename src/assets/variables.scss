@@ -157,10 +157,10 @@ $text-color: rgba(255, 255, 255, 0.55);
 // 9. Dropdown
 // ==========================================================================
 
-// $dropdown-bg-color: #fff !default;
-// $dropdown-hover-bg-color: #eee !default;
-// $dropdown-color: $secondary-color !default;
-// $dropdown-item-height: 50px !default;
+$dropdown-bg-color: $primary-color;
+$dropdown-hover-bg-color: transparent;
+$dropdown-color: $text-color;
+$dropdown-item-height: 50px;
 
 
 // 10. Forms

@@ -3,3 +3,14 @@
     overflow: hidden;
     white-space: nowrap;
 }
+
+button.btn {
+    background: transparent;
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.55);
+    
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.1);
+        box-shadow: none;
+    }
+}

@@ -32,14 +32,7 @@
                 display: flex;
                 align-items: center;
                 
-                button {
-                    background: transparent;
-                    box-shadow: none;
 
-                    &:hover{
-                        background-color: rgba(0, 0, 0, 0.1);
-                    }
-                }
             }
         }
     }
@@ -57,7 +50,6 @@
             flex-direction: row;
             
             .btn {
-                color: rgba(255, 255, 255, 0.55);
                 
                 i{
                     font-size: 2rem;

@@ -2,3 +2,4 @@ node_modules
 .git
 .next
 .env
+transfer_funds_data.js
