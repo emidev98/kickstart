@@ -27,14 +27,14 @@ class Campaigns extends React.Component {
 						<li className="collection-item" key={index}>
 							<div className="collection-left">
 								<h5 className="title">{campaignSummary.title}</h5>
-								<p>{campaignSummary.address}</p>
+								<p className="address">{campaignSummary.address}</p>
 							</div>
 							<ul className="collection-right">
 								<Link to={`/campaigns/${campaignSummary.address}`}
 									className="collection-list-item">
 									<Button tooltip="Check the most important details of this specific campaign"
 										tooltipOptions={{
-											position: "left",
+											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
 										}}>
@@ -46,7 +46,7 @@ class Campaigns extends React.Component {
 									className="collection-list-item">
 									<Button tooltip="Check the requests that the manager has open for the campign"
 										tooltipOptions={{
-											position: "left",
+											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
 										}}>
@@ -58,7 +58,7 @@ class Campaigns extends React.Component {
 									className="collection-list-item">
 									<Button tooltip="Add a new request to the campaign"
 										tooltipOptions={{
-											position: "left",
+											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
 										}}>
