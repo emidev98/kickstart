@@ -1,2 +1,1 @@
-# Kickstart
-On Blockchain Kickstart project 
+https://prettier.io/docs/en/options.html

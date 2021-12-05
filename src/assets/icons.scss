@@ -1,0 +1,17 @@
+.network-logo {
+
+    &.ethereum {
+        background: url("./blockchains/ethereum.png");
+    
+    }
+    
+    &.harmony {
+        background: url("./blockchains/harmony.png");
+    
+    }
+    
+    &.polygon {
+        background: url("./blockchains/polygon.png");
+    
+    }
+}

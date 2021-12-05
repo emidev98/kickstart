@@ -1,0 +1,117 @@
+@import "./../../assets/variables.scss";
+@import "./../../assets/icons.scss";
+
+nav {
+
+    .brand-logo,
+    li a {
+        color: $text-color;
+        display: flex;
+        align-items: center;
+        height: inherit;
+        transition: background-color .3s;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        &[aria-current=page]{
+            color: white;
+        }
+
+        h5 {
+            margin: 0;
+        }
+
+        i {
+            margin-right: 0.5em;
+            
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
+
+    .brand-logo { 
+        padding: 0 15px;
+        color: white;
+
+        img {
+            width: 46px;
+            height: 46px;
+            margin-right: 0.5em;
+        }
+    }
+
+    #more-options-dropdown {
+        height: auto !important;
+    }
+    
+    #more-options-dropdown,
+    #change-network-dropdown {
+        top: -4px;
+        
+    }
+
+    #change-network-dropdown {
+        display: flex !important;
+
+        li {
+            display: flex;
+            justify-content: center;
+
+            a {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                width: inherit;
+                
+                .network-logo {
+                    width: 24px;
+                    height: 24px;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
+                    margin-bottom: 0.5em;
+                    border-radius: 4px;
+                    border: 1px solid #334355;
+                    
+                }
+                
+                &.selected {
+                    background-color: rgba(0, 0, 0, 0.2);
+                    
+                }
+            }
+        }
+    }
+}
+
+#mobile-nav{
+
+    #sidenav-more-options-dropdown,
+    #sidenav-change-network-dropdown {
+        background: white;
+        box-shadow: none;
+
+    }
+
+    #sidenav-change-network-dropdown {
+
+        a {
+            display: flex;
+            align-items: center;
+
+            .network-logo {
+                width: 24px;
+                height: 24px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+                margin-right: 1em;
+                border-radius: 4px;
+                
+            }
+        }
+    }
+}
