@@ -5,6 +5,7 @@ import "./Campaigns.scss";
 import { ICampaign } from "../models/ICampaign";
 import { Link } from "react-router-dom";
 import { Button } from "react-materialize";
+import LoaderService from "../services/LoaderService";
 
 class Campaigns extends React.Component {
 	state = {
@@ -12,10 +13,12 @@ class Campaigns extends React.Component {
 	};
 
 	componentDidMount = async () => {
+		LoaderService.setLoading(true);
 		const campaignFactory = CampaignFactory.getCampingFactory();
 		const campaigns = await campaignFactory.methods.getDeployedCampaigns().call();
 		const campaignsSummary = await CampaignService.getCampingsSummary(campaigns);
 		console.log(campaignsSummary);
+		LoaderService.setLoading(false);
 		this.setState({ campaigns: campaignsSummary });
 	};
 

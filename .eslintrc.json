@@ -14,13 +14,29 @@
 	"plugins": ["react", "@typescript-eslint"],
 	"rules": {
 		"linebreak-style": ["error", "unix"],
-		"quotes": ["error", "double"],
-		"semi": ["error", "always"],
-		"indent": ["error", "tab"],
+		"quotes": ["warn", "double"],
+		"semi": ["warn", "always"],
+		"indent": ["warn", "tab"],
 		"max-len": [
 			"error",
 			{
 				"code": 120
+			}
+		],
+		"@typescript-eslint/ban-types": [
+			"error",
+			{
+				"types": {
+					"String": true,
+					"Boolean": true,
+					"Number": true,
+					"Symbol": true,
+					"{}": true,
+					"Object": true,
+					"object": true,
+					"Function": false
+				},
+				"extendDefaults": true
 			}
 		]
 	}

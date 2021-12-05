@@ -1,4 +1,4 @@
-import web3 from "./web3";
+import Web3Service from "./Web3Service";
 import Campaign from "../contracts-interfaces/Campaign.json";
 import { ICampaign } from "../models/ICampaign";
 
@@ -7,7 +7,7 @@ class CampaignService {
 
 	static getCamping = (address: string) => {
 		const contractInterface = JSON.parse(Campaign.interface);
-		return new web3.eth.Contract(contractInterface, address);
+		return new Web3Service.provider.eth.Contract(contractInterface, address);
 	};
 
 	static getCampingSummary = async (address: string) => {
@@ -60,14 +60,14 @@ class CampaignService {
 	};
 
 	static approveRequest = async (address: string, index: string) => {
-		const accounts = await web3.eth.getAccounts();
+		const accounts = await Web3Service.provider.eth.getAccounts();
 		const campign = CampaignService.getCamping(address);
 
 		return campign.methods.approveRequest(parseInt(index)).send({ from: accounts[0] });
 	};
 
 	static finalizeRequest = async (address: string, index: string) => {
-		const accounts = await web3.eth.getAccounts();
+		const accounts = await Web3Service.provider.eth.getAccounts();
 		const campign = CampaignService.getCamping(address);
 
 		return campign.methods.finalizeRequest(parseInt(index)).send({ from: accounts[0] });

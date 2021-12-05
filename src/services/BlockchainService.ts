@@ -1,14 +1,12 @@
-import React from "react";
 import blockchains from "../blockchains.json";
 import IBlockchain from "../models/IBlockchain";
 
 class BlockchainService {
-
-	static get blockchains() : Array<IBlockchain> {
+	static get blockchains(): Array<IBlockchain> {
 		return blockchains;
 	}
 
-	static get selected() : IBlockchain {
+	static get selected(): IBlockchain {
 		return blockchains.find((blockchain) => blockchain.selected) as IBlockchain;
 	}
 
