@@ -8,6 +8,14 @@
     #pages-wrapper {
         overflow: auto;
         flex-grow: 1;
+        transition: opacity 0.2s;
+    }
 
+    &.loading {
+
+        #pages-wrapper {
+            opacity: 0;
+
+        }
     }
 }

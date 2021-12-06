@@ -5,6 +5,10 @@ import { NavLink } from "react-router-dom";
 import BlockchainService from "../../services/BlockchainService";
 import IBlockchain from "../../models/IBlockchain";
 import logo from "../../assets/img/logo.png";
+import Web3Service from "../../services/Web3Service";
+import M from 'materialize-css';
+import LoaderService from "../../services/LoaderService";
+import AddressFormatter from "../Address/AddressFormatter";
 
 class AppNavbar extends React.Component {
 	state = {
@@ -39,6 +43,17 @@ class AppNavbar extends React.Component {
 		if (blockchain.selected) return;
 	};
 
+	onConnect = async () => {
+		LoaderService.setLoading(true);
+		try {
+			await Web3Service.connectMetamask(true);
+		}
+		catch (e: any) {
+			M.toast({ html: e.message});
+		}
+		LoaderService.setLoading(false);
+	};
+
 	renderBrand = () => {
 		return (
 			<NavLink to="/">
@@ -53,11 +68,9 @@ class AppNavbar extends React.Component {
 			.filter((blockchain) => blockchain.contractAddress)
 			.map((blockchain, index) => {
 				return (
-					<a
-						className={blockchain.selected ? "selected" : ""}
+					<a className={blockchain.selected ? "selected" : ""}
 						onClick={() => this.onSelectBlockchain(blockchain)}
-						key={index}
-					>
+						key={index}>
 						<div className={`network-logo ${blockchain.icon}`} />
 						<span>{blockchain.name}</span>
 					</a>
@@ -72,10 +85,22 @@ class AppNavbar extends React.Component {
 					<Icon>list</Icon>
 					<span>Campaigns</span>
 				</NavLink>
-				<NavLink to="/campaigns/new">
-					<Icon>add</Icon>
-					<span>New</span>
-				</NavLink>
+				{Web3Service.account ? (
+					<NavLink to="/campaigns/new">
+						<Icon>add</Icon>
+						<span>New</span>
+					</NavLink>
+				) : ("")}
+				{Web3Service.account ? (
+					<a>
+						<AddressFormatter maxWidth="92.46px" address={Web3Service.account}/>
+					</a>
+				) : (
+					<a onClick={() => this.onConnect()}>
+						<Icon>account_balance_wallet</Icon>
+						<span>Connect</span>
+					</a>
+				)}
 				<Dropdown
 					id="change-network-dropdown"
 					options={{

@@ -1,0 +1,13 @@
+span {
+    
+    &.address-formatter {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 1px;
+
+    }
+}
