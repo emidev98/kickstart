@@ -51,7 +51,7 @@ class Campaigns extends React.Component {
 									className="collection-list-item"
 								>
 									<Button
-										tooltip="Check the requests that the manager has open for the campign"
+										tooltip="Check the requests that the manager has open for the campaign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
