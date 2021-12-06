@@ -61,16 +61,16 @@ class CampaignService {
 
 	static approveRequest = async (address: string, index: string) => {
 		const accounts = await Web3Service.provider.eth.getAccounts();
-		const campign = CampaignService.getCamping(address);
+		const campaign = CampaignService.getCamping(address);
 
-		return campign.methods.approveRequest(parseInt(index)).send({ from: accounts[0] });
+		return campaign.methods.approveRequest(parseInt(index)).send({ from: accounts[0] });
 	};
 
 	static finalizeRequest = async (address: string, index: string) => {
 		const accounts = await Web3Service.provider.eth.getAccounts();
-		const campign = CampaignService.getCamping(address);
+		const campaign = CampaignService.getCamping(address);
 
-		return campign.methods.finalizeRequest(parseInt(index)).send({ from: accounts[0] });
+		return campaign.methods.finalizeRequest(parseInt(index)).send({ from: accounts[0] });
 	};
 }
 
