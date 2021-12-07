@@ -11,6 +11,7 @@ import LoaderService from "../../services/LoaderService";
 import AddressFormatter from "../Address/AddressFormatter";
 
 class AppNavbar extends React.Component {
+
 	state = {
 		selectedBlockchain: {
 			name: "",
@@ -20,11 +21,21 @@ class AppNavbar extends React.Component {
 			currency: "",
 			chainId: "",
 			icon: ""
-		}
+		},
+		account : ""
 	};
 
 	componentDidMount = () => {
 		this.initBlockchain();
+		Web3Service.account
+			.subscribe((account)=> {
+				console.log(account)
+				this.setState({account})
+			});
+	};  
+	
+	componentWillUnmount = () => {
+		Web3Service.account.unsubscribe();
 	};
 
 	initBlockchain = () => {
@@ -85,15 +96,15 @@ class AppNavbar extends React.Component {
 					<Icon>list</Icon>
 					<span>Campaigns</span>
 				</NavLink>
-				{Web3Service.account ? (
+				{this.state.account ? (
 					<NavLink to="/campaigns/new">
 						<Icon>add</Icon>
 						<span>New</span>
 					</NavLink>
 				) : ("")}
-				{Web3Service.account ? (
+				{this.state.account ? (
 					<a>
-						<AddressFormatter maxWidth="92.46px" address={Web3Service.account}/>
+						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>
 					</a>
 				) : (
 					<a onClick={() => this.onConnect()}>

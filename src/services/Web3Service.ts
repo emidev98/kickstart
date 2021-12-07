@@ -1,12 +1,13 @@
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import BlockchainService from "./BlockchainService";
+import { Subject } from 'rxjs';
 
 export default class Web3Service {
-	static isMetamaskAvailable = false;
 	static provider: any;
-	static account : string;
-
+	static account = new Subject<string>();
+	static eventLisenersAvailable = false;
+	
 	static init() {
 		this.connectProvider();
 		return this.connectMetamask();
@@ -18,20 +19,30 @@ export default class Web3Service {
 	}
 
 	static async connectMetamask(shouldRaiseError?: boolean) {
-		const provider = await detectEthereumProvider();
-
-		// If ethereum object exists on window object
-		// is because Metamask injected it.
+		const provider = await detectEthereumProvider() as any;
+		
 		if(provider){
-			const account = await (<any>window).ethereum.request({ method: "eth_requestAccounts" });
-			this.onAccountChanged((accounts:Array<string>) => Web3Service.account = accounts[0]);
-			Web3Service.provider = new Web3(provider as any);
-			Web3Service.account = account;
+			Web3Service.provider = new Web3(provider);
+			const account = await provider.request({ method: "eth_requestAccounts" });
+			Web3Service.account.next(account);
+			console.log(provider.chainId);
+
+			if(!this.eventLisenersAvailable){
+				this.addEventListeners();
+			}
 		} 
 		else if(shouldRaiseError) throw Error("Metamask not available");
 	}
 
-	static onAccountChanged(fn : Function) {
-		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => fn(account));
+	private static addEventListeners(){
+		this.eventLisenersAvailable = true;
+		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => {
+			Web3Service.account.next(account[0]);
+		});
+
+		(<any>window).ethereum.on('chainChanged', (chainId : any) => {
+			BlockchainService.select(chainId);
+			window.location.reload();
+		});
 	}
 }

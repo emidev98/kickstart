@@ -5,6 +5,7 @@ import BlockchainService from "./BlockchainService";
 class CampaignFactory {
 	static getCampingFactory = () => {
 		const contractInterface = JSON.parse(CampaignFactoryJson.interface);
+		console.log(Web3Service.provider)
 		return new Web3Service.provider.eth.Contract(contractInterface, BlockchainService.selectedAddress);
 	};
 
