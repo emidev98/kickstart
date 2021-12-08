@@ -1,26 +1,63 @@
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import BlockchainService from "./BlockchainService";
+import { BehaviorSubject } from 'rxjs';
 
 export default class Web3Service {
-	static isMetamaskAvailable = false;
 	static provider: any;
+	static account = new BehaviorSubject("");
+	static eventLisenersAvailable = false;
 
 	static init() {
-		// Otherwise we create our own provider for the
-		// user to at least be able to view the data
-		const provider = new Web3.providers.HttpProvider(BlockchainService.selected.url);
-		Web3Service.provider = new Web3(provider);
+		this.connectProvider();
+		return this.connectMetamask();
 	}
 
-	static async connectMetamask() {
-		const provider = await detectEthereumProvider();
+	static switchNetwork(chainId : string) {
+		BlockchainService.select(chainId);
+		console.log(this.account.value)
+		if(this.account.value){
+			(window as any).ethereum
+				.request({
+					method: "wallet_switchEthereumChain", 
+					params: [{ chainId : chainId}]
+				});
+		}
+		else {
+			this.connectProvider();
+			window.location.reload();
+		}
+	}
 
-		// If ethereum object exists on window object
-		// is because Metamask injected it.
-		(<any>window).ethereum.request({ method: "eth_requestAccounts" });
-		Web3Service.provider = new Web3(provider as any);
+	static connectProvider() {
+		const provider = new Web3.providers.HttpProvider(BlockchainService.selected.url);
+		this.provider = new Web3(provider);
+	}
 
-		console.log(Web3Service.provider);
+	static async connectMetamask(shouldRaiseError?: boolean) {
+		const provider = await detectEthereumProvider() as any;
+		
+		if(provider){
+			this.provider = new Web3(provider);
+			const account = await provider.request({ method: "eth_requestAccounts" });
+			this.account.next(account);
+
+			if(!this.eventLisenersAvailable){
+				this.addEventListeners();
+			}
+		} 
+		else if(shouldRaiseError) throw Error("Metamask not available");
+	}
+
+	private static addEventListeners(){
+		this.eventLisenersAvailable = true;
+		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => {
+			this.account.next(account[0]);
+		});
+
+		(<any>window).ethereum.on('chainChanged', (chainId : any) => {
+			BlockchainService.select(chainId);
+			window.location.reload();
+		});
 	}
 }

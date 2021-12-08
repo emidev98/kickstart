@@ -5,8 +5,13 @@ import { NavLink } from "react-router-dom";
 import BlockchainService from "../../services/BlockchainService";
 import IBlockchain from "../../models/IBlockchain";
 import logo from "../../assets/img/logo.png";
+import Web3Service from "../../services/Web3Service";
+import M from 'materialize-css';
+import LoaderService from "../../services/LoaderService";
+import AddressFormatter from "../Address/AddressFormatter";
 
 class AppNavbar extends React.Component {
+
 	state = {
 		selectedBlockchain: {
 			name: "",
@@ -16,11 +21,21 @@ class AppNavbar extends React.Component {
 			currency: "",
 			chainId: "",
 			icon: ""
-		}
+		},
+		account : ""
 	};
 
 	componentDidMount = () => {
 		this.initBlockchain();
+		Web3Service.account
+			.subscribe((account)=> {
+				console.log(account)
+				this.setState({account})
+			});
+	};  
+	
+	componentWillUnmount = () => {
+		Web3Service.account.unsubscribe();
 	};
 
 	initBlockchain = () => {
@@ -37,6 +52,19 @@ class AppNavbar extends React.Component {
 
 	onSelectBlockchain = (blockchain: IBlockchain) => {
 		if (blockchain.selected) return;
+		
+		Web3Service.switchNetwork(blockchain.chainId);
+	};
+
+	onConnect = async () => {
+		LoaderService.setLoading(true);
+		try {
+			await Web3Service.connectMetamask(true);
+		}
+		catch (e: any) {
+			M.toast({ html: e.message});
+		}
+		LoaderService.setLoading(false);
 	};
 
 	renderBrand = () => {
@@ -53,11 +81,9 @@ class AppNavbar extends React.Component {
 			.filter((blockchain) => blockchain.contractAddress)
 			.map((blockchain, index) => {
 				return (
-					<a
-						className={blockchain.selected ? "selected" : ""}
+					<a className={blockchain.selected ? "selected" : ""}
 						onClick={() => this.onSelectBlockchain(blockchain)}
-						key={index}
-					>
+						key={index}>
 						<div className={`network-logo ${blockchain.icon}`} />
 						<span>{blockchain.name}</span>
 					</a>
@@ -72,10 +98,22 @@ class AppNavbar extends React.Component {
 					<Icon>list</Icon>
 					<span>Campaigns</span>
 				</NavLink>
-				<NavLink to="/campaigns/new">
-					<Icon>add</Icon>
-					<span>New</span>
-				</NavLink>
+				{this.state.account ? (
+					<NavLink to="/campaigns/new">
+						<Icon>add</Icon>
+						<span>New</span>
+					</NavLink>
+				) : ("")}
+				{this.state.account ? (
+					<a>
+						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>
+					</a>
+				) : (
+					<a onClick={() => this.onConnect()}>
+						<Icon>account_balance_wallet</Icon>
+						<span>Connect</span>
+					</a>
+				)}
 				<Dropdown
 					id="change-network-dropdown"
 					options={{

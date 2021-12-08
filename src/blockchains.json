@@ -5,8 +5,9 @@
 		"contractExplorer": "https://etherscan.io/",
 		"contractAddress": "",
 		"currency": "ether",
-		"chainId": "1",
-		"icon": "ethereum"
+		"chainId": "0x1",
+		"icon": "ethereum",
+		"version" : 1
 	},
 	{
 		"name": "Rinkeby",
@@ -14,8 +15,9 @@
 		"contractExplorer": "https://rinkeby.etherscan.io/",
 		"contractAddress": "0x5a3a8465410E9523cB965f31997E82cFECd2ea56",
 		"currency": "ether",
-		"chainId": "4",
+		"chainId": "0x4",
 		"icon": "ethereum",
+		"version" : 1,
 		"selected": true
 	},
 	{
@@ -24,8 +26,9 @@
 		"contractExplorer": "https://explorer.harmony.one/",
 		"contractAddress": "",
 		"currency": "one",
-		"chainId": "1666600000",
-		"icon": "harmony"
+		"chainId": "0x63564c40",
+		"icon": "harmony",
+		"version" : 1
 	},
 	{
 		"name": "Harmony Testnet",
@@ -33,8 +36,9 @@
 		"contractExplorer": "https://explorer.pops.one/",
 		"contractAddress": "0x1c8c25ac9637dadf7ea6e43ba6a588ecc4f0187a",
 		"currency": "one",
-		"chainId": "1666700000",
-		"icon": "harmony"
+		"chainId": "0x6357d2e0",
+		"icon": "harmony",
+		"version" : 1
 	},
 	{
 		"name": "Polygon Matic",
@@ -42,8 +46,9 @@
 		"contractExplorer": "https://explorer.matic.network/",
 		"contractAddress": "",
 		"currency": "Matic",
-		"chainId": "137",
-		"icon": "polygon"
+		"chainId": "0x89",
+		"icon": "polygon",
+		"version" : 1
 	},
 	{
 		"name": "Polygon Matic Mumbai",
@@ -51,7 +56,8 @@
 		"contractExplorer": "https://mumbai.polygonscan.com/",
 		"contractAddress": "0x92cA7C04280e4F8C0AC2aCB97799eBB94f7b9174",
 		"currency": "Matic",
-		"chainId": "80001",
-		"icon": "polygon"
+		"chainId": "0x13881",
+		"icon": "polygon",
+		"version" : 1
 	}
 ]

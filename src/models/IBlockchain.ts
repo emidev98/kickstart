@@ -6,5 +6,6 @@ export default interface IBlockchain {
 	currency: string;
 	chainId: string;
 	icon: any;
+	version: number
 	selected?: boolean;
 }
