@@ -52,6 +52,8 @@ class AppNavbar extends React.Component {
 
 	onSelectBlockchain = (blockchain: IBlockchain) => {
 		if (blockchain.selected) return;
+		
+		Web3Service.switchNetwork(blockchain.chainId);
 	};
 
 	onConnect = async () => {

@@ -17,7 +17,9 @@ class BlockchainService {
 
 		// Validate if all chains from local storage are up to date
 		// and delete the chains that are not existing anymore
-		const updatedChains = _.chain(storageChains) // FIX 
+		// FIX: if there are more chains on the json file than 
+		// loclastorage they will never be displayed
+		const updatedChains = _.chain(storageChains) 
 			.map((storageChain) => {
 				const newChain = _.find(defaultChains, (defaultChain : IBlockchain) => {
 					const isSameChain = storageChain.chainId === defaultChain.chainId;

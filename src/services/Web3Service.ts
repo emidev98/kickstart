@@ -1,31 +1,46 @@
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import BlockchainService from "./BlockchainService";
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export default class Web3Service {
 	static provider: any;
-	static account = new Subject<string>();
+	static account = new BehaviorSubject("");
 	static eventLisenersAvailable = false;
-	
+
 	static init() {
 		this.connectProvider();
 		return this.connectMetamask();
 	}
 
+	static switchNetwork(chainId : string) {
+		BlockchainService.select(chainId);
+		console.log(this.account.value)
+		if(this.account.value){
+			(window as any).ethereum
+				.request({
+					method: "wallet_switchEthereumChain", 
+					params: [{ chainId : chainId}]
+				});
+		}
+		else {
+			this.connectProvider();
+			window.location.reload();
+		}
+	}
+
 	static connectProvider() {
 		const provider = new Web3.providers.HttpProvider(BlockchainService.selected.url);
-		Web3Service.provider = new Web3(provider);
+		this.provider = new Web3(provider);
 	}
 
 	static async connectMetamask(shouldRaiseError?: boolean) {
 		const provider = await detectEthereumProvider() as any;
 		
 		if(provider){
-			Web3Service.provider = new Web3(provider);
+			this.provider = new Web3(provider);
 			const account = await provider.request({ method: "eth_requestAccounts" });
-			Web3Service.account.next(account);
-			console.log(provider.chainId);
+			this.account.next(account);
 
 			if(!this.eventLisenersAvailable){
 				this.addEventListeners();
@@ -37,7 +52,7 @@ export default class Web3Service {
 	private static addEventListeners(){
 		this.eventLisenersAvailable = true;
 		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => {
-			Web3Service.account.next(account[0]);
+			this.account.next(account[0]);
 		});
 
 		(<any>window).ethereum.on('chainChanged', (chainId : any) => {
