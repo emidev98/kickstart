@@ -7,9 +7,12 @@
 		"build:ui": "react-scripts build",
 		"test:ui": "react-scripts test",
 		"eject:ui": "react-scripts eject",
+
 		"build:contracts": "ts-node ./contracts/build.ts",
 		"deploy:contracts": "ts-node ./contracts/deploy.ts",
 		"test:contracts": "jest --config jest.config.ts ",
+		"uml:contracts": "sol2uml ./contracts -o ./public/contracts-erd.svg",
+		
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
@@ -52,6 +55,7 @@
 		"jest": "26.6.0",
 		"node-sass": "4.14.1",
 		"prettier": "^2.5.0",
+		"sol2uml": "^1.1.29",
 		"solc": "^0.4.17",
 		"ts-jest": "^26.5.6",
 		"ts-node": "^10.4.0",
