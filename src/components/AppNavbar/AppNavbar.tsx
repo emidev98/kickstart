@@ -26,22 +26,18 @@ class AppNavbar extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.initBlockchain();
+		this.setState({
+			selectedBlockchain: BlockchainService.selected
+		});
+		
 		Web3Service.account
 			.subscribe((account)=> {
-				console.log(account)
 				this.setState({account})
 			});
 	};  
 	
 	componentWillUnmount = () => {
 		Web3Service.account.unsubscribe();
-	};
-
-	initBlockchain = () => {
-		this.setState({
-			selectedBlockchain: BlockchainService.selected
-		});
 	};
 
 	getContractExplorerUrl = () => {
@@ -57,15 +53,21 @@ class AppNavbar extends React.Component {
 	};
 
 	onConnect = async () => {
-		LoaderService.setLoading(true);
+		LoaderService.loading(true);
 		try {
 			await Web3Service.connectMetamask(true);
 		}
 		catch (e: any) {
 			M.toast({ html: e.message});
 		}
-		LoaderService.setLoading(false);
+		LoaderService.loading(false);
 	};
+
+	onToggleDropdownClass = (element : Element) =>{
+		// Todo toggle dropdown class
+		element.classList.toggle("visible");
+	
+	}
 
 	renderBrand = () => {
 		return (
@@ -93,7 +95,9 @@ class AppNavbar extends React.Component {
 
 	render = () => {
 		return (
-			<Navbar alignLinks="right" brand={this.renderBrand()} menuIcon={<Icon>menu</Icon>}>
+			<Navbar alignLinks="right" 
+				brand={this.renderBrand()} 
+				menuIcon={<Icon>menu</Icon>}>
 				<NavLink to="/">
 					<Icon>list</Icon>
 					<span>Campaigns</span>
@@ -119,6 +123,8 @@ class AppNavbar extends React.Component {
 					options={{
 						constrainWidth: false,
 						coverTrigger: false,
+						onOpenStart: this.onToggleDropdownClass,
+						onCloseStart: this.onToggleDropdownClass ,
 						inDuration: 120,
 						outDuration: 120
 					}}

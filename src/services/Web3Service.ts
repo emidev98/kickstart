@@ -15,7 +15,6 @@ export default class Web3Service {
 
 	static switchNetwork(chainId : string) {
 		BlockchainService.select(chainId);
-		console.log(this.account.value)
 		if(this.account.value){
 			(window as any).ethereum
 				.request({
@@ -40,7 +39,7 @@ export default class Web3Service {
 		if(provider){
 			this.provider = new Web3(provider);
 			const account = await provider.request({ method: "eth_requestAccounts" });
-			this.account.next(account);
+			this.account.next(account[0]);
 
 			if(!this.eventLisenersAvailable){
 				this.addEventListeners();

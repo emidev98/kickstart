@@ -50,11 +50,22 @@ nav {
     #more-options-dropdown,
     #change-network-dropdown {
         top: -4px;
-        
+
+    }
+
+    .dropdown-trigger {
+
+        &.visible {
+            #change-network-dropdown{
+                z-index: 1000 !important;
+
+            }
+        }
     }
 
     #change-network-dropdown {
         display: flex !important;
+        z-index: -1000;
 
         li {
             display: flex;
