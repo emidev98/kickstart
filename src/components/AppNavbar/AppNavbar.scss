@@ -16,7 +16,7 @@ nav {
         }
         
         &[aria-current=page]{
-            color: white;
+            color: $almost-white;
         }
 
         h5 {
@@ -34,7 +34,7 @@ nav {
 
     .brand-logo { 
         padding: 0 15px;
-        color: white;
+        color: $almost-white;
 
         img {
             width: 46px;
@@ -53,19 +53,13 @@ nav {
 
     }
 
-    .dropdown-trigger {
-
-        &.visible {
-            #change-network-dropdown{
-                z-index: 1000 !important;
-
-            }
-        }
-    }
-
     #change-network-dropdown {
         display: flex !important;
         z-index: -1000;
+
+        &.visible {
+            z-index: 1000;
+        }
 
         li {
             display: flex;

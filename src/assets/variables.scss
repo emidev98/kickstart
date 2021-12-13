@@ -45,8 +45,11 @@ $success-color: color("green", "base");
 $error-color: color("red", "base");
 $link-color: color("light-blue", "darken-1");
 
-$text-color: rgba(255, 255, 255, 0.55);
+$text-color: rgba(255, 255, 255, 0.72);
+$almost-white: rgba(255, 255, 255, 0.8);
 
+$disabled-color: rgba(0,0,0,.42);
+$disabled-background: rgba(0,0,0,0.1);
 
 // 2. Badges
 // ==========================================================================
@@ -68,8 +71,8 @@ $text-color: rgba(255, 255, 255, 0.55);
 // $button-radius: 2px !default;
 
 // Disabled styles
-// $button-disabled-background: #DFDFDF !default;
-// $button-disabled-color: #9F9F9F !default;
+$button-disabled-color: $disabled-color;
+$button-disabled-background: $disabled-background;
 
 // Raised buttons
 // $button-raised-background: $secondary-color !default;
@@ -173,14 +176,14 @@ $dropdown-item-height: 50px;
 // $input-background: #fff !default;
 // $input-error-color: $error-color !default;
 // $input-success-color: $success-color !default;
-// $input-focus-color: $secondary-color !default;
+$input-focus-color: $text-color;
 // $input-font-size: 16px !default;
 // $input-margin-bottom: 8px;
 // $input-margin: 0 0 $input-margin-bottom 0 !default;
 // $input-padding: 0 !default;
 // $label-font-size: .8rem !default;
-// $input-disabled-color: rgba(0,0,0, .42) !default;
-// $input-disabled-solid-color: #949494 !default;
+$input-disabled-color: $disabled-color;
+$input-disabled-background: $disabled-background;
 // $input-disabled-border: 1px dotted $input-disabled-color !default;
 // $input-invalid-border: 1px solid $input-error-color !default;
 // $input-icon-size: 2rem;

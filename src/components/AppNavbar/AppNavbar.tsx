@@ -65,7 +65,9 @@ class AppNavbar extends React.Component {
 
 	onToggleDropdownClass = (element : Element) =>{
 		// Todo toggle dropdown class
-		element.classList.toggle("visible");
+		document.getElementById("change-network-dropdown")
+			?.classList
+			.toggle("visible")
 	
 	}
 
@@ -102,12 +104,10 @@ class AppNavbar extends React.Component {
 					<Icon>list</Icon>
 					<span>Campaigns</span>
 				</NavLink>
-				{this.state.account ? (
-					<NavLink to="/campaigns/new">
-						<Icon>add</Icon>
-						<span>New</span>
-					</NavLink>
-				) : ("")}
+				<NavLink to="/campaigns/new">
+					<Icon>add</Icon>
+					<span>New</span>
+				</NavLink>
 				{this.state.account ? (
 					<a>
 						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>

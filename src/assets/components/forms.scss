@@ -1,0 +1,18 @@
+@import "./../variables.scss";
+
+.input-field {
+    
+    input,
+    textarea{
+        color: white;
+        
+        &:disabled{
+            background-color: $disabled-background !important;
+        }
+    }
+
+    label{
+        padding: 0 0.5em;
+
+    }    
+}
