@@ -1,24 +1,97 @@
-import React, { FormEvent } from "react";
-import { Button, Card, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
+import _ from "lodash";
+import React, { BaseSyntheticEvent, FormEvent } from "react";
+import { Button, Card, CardPanel, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
 import Web3Service from "../../../services/Web3Service";
 import "./NewCampaign.scss";
 
 class NewCampaign extends React.Component {
 
 	state = {
-		errorMessage : "",
-		title: "",
-		minimumContribution : "",
-		account : ""
+		form : {
+			title: {
+				value: "",
+				errorMessage: ""
+			},
+			minimumContribution: {
+				value: "",
+				errorMessage: ""
+			}
+		},
+		errorMessage: "",
+		account: ""
 	}
 
 	componentDidMount = () => {
-		console.log("NewCampaign - componentDidMount");
-
 		Web3Service.account
 			.subscribe((account)=> {
 				this.setState({account})
 			});
+	}
+
+	onChangeForm = (event: BaseSyntheticEvent) => {
+		event.preventDefault();
+		const { id, value } : { 
+			id: "title" | "minimumContribution",
+			value: string | number
+		} = event.target;
+		
+		this.setState({
+			form : {
+				...this.state.form,
+				[id]: {
+					...this.state.form[id],
+					value
+				}
+			}
+		});
+
+		_.forEach(this.state.form, (formValues, formName) => {
+			let errorMessage = "";
+
+			switch(formName){
+				case 'title':
+					if(!value) {
+						errorMessage = "Write a title for your campaign";
+					}
+					else if((value as string).length > 80) {
+						errorMessage = "Minimum contribution needs to be a positive number";
+					}
+					break;
+				case 'minimumContribution':
+					if(value < 0) {
+						errorMessage = "Minimum contribution needs to be a positive number";
+					}
+					break;
+			}
+
+			if(errorMessage){
+				this.setFormValueToState(
+					formName,
+					formValues,
+					errorMessage,
+					value
+				);
+				this.setState({errorMessage});
+			}
+
+			//todo validate again 
+		})
+
+		console.log(this.state.form.minimumContribution)
+		console.log(this.state.form.title)
+	}
+
+	setFormValueToState = (formFieldName: any, formFieldValues: any, errorMessage: any, value: any) => {
+		this.setState({
+			form : {
+				...this.state.form,
+				[formFieldName]: {
+					...formFieldValues,
+					errorMessage,
+					value
+				}
+			}
+		});
 	}
 
 	onSubmit = (event : FormEvent) => {
@@ -35,18 +108,24 @@ class NewCampaign extends React.Component {
 			}>
 				<Row>
 					<Col l={8} m={6} s={12}>
-						<form className="campaign-form" onSubmit={this.onSubmit}>
-							<Textarea disabled={!this.state.account} 
-								value={this.state.title}
-								label="Title"
-								data-length={120}
-								onChange={event => this.setState({ title: event.target.value })}/>
-							<TextInput disabled={!this.state.account} 
-								value={this.state.minimumContribution}
-								label="Minimum contribution"
-								onChange={event => this.setState({ minimumContribution: event.target.value })}/>
+						<form className="campaign-form" 
+							onSubmit={this.onSubmit} 
+							onChange={this.onChangeForm}>
+							<Textarea id='title'
+								disabled={!this.state.account}
+								label="* Title"
+								data-length={80}/>
+							<TextInput id='minimumContribution'
+								disabled={!this.state.account}
+								label="* Minimum contribution"
+								type="number"
+								inputClassName="hide-scrollbar"/>
+							<CardPanel className="error-panel"
+								style={{
+									display: this.state.errorMessage ? "block" : "none"
+								}}>{this.state.errorMessage}</CardPanel>
 							<Col className="form-footer">
-								<Button disabled={!this.state.account}> 
+								<Button disabled={!this.state.account || !!this.state.errorMessage}> 
 									<Icon>add</Icon>
 									<span>Create</span>
 								</Button>

@@ -42,7 +42,7 @@ $primary-color-dark: darken($primary-color, 15%);
 
 $secondary-color: #556578;
 $success-color: color("green", "base");
-$error-color: color("red", "base");
+$error-color: rgba(244, 67, 54, .5);
 $link-color: color("light-blue", "darken-1");
 
 $text-color: rgba(255, 255, 255, 0.72);
