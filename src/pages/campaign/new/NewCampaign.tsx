@@ -1,21 +1,23 @@
 import _ from "lodash";
 import React, { BaseSyntheticEvent, FormEvent } from "react";
 import { Button, Card, CardPanel, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
+import CampaignFactory from "../../../services/CampaignFactory";
+import LoaderService from "../../../services/LoaderService";
 import Web3Service from "../../../services/Web3Service";
 import "./NewCampaign.scss";
 
 class NewCampaign extends React.Component {
 
 	state = {
-		form : {
-			title: {
-				value: "",
-				errorMessage: ""
-			},
-			minimumContribution: {
-				value: "",
-				errorMessage: ""
-			}
+		title: {
+			value: "",
+			errorMessage: "",
+			isValid:  false
+		},
+		minimumContribution: {
+			value: "",
+			errorMessage: "",
+			isValid:  false
 		},
 		errorMessage: "",
 		account: ""
@@ -28,75 +30,59 @@ class NewCampaign extends React.Component {
 			});
 	}
 
-	onChangeForm = (event: BaseSyntheticEvent) => {
+	validateForm = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
 		const { id, value } : { 
 			id: "title" | "minimumContribution",
 			value: string | number
 		} = event.target;
-		
-		this.setState({
-			form : {
-				...this.state.form,
-				[id]: {
-					...this.state.form[id],
-					value
+		let errorMessage = "";
+
+		switch(id){
+			case 'title':
+				if(!value) {
+					errorMessage = "Write a title for your campaign";
 				}
-			}
-		});
-
-		_.forEach(this.state.form, (formValues, formName) => {
-			let errorMessage = "";
-
-			switch(formName){
-				case 'title':
-					if(!value) {
-						errorMessage = "Write a title for your campaign";
-					}
-					else if((value as string).length > 80) {
-						errorMessage = "Minimum contribution needs to be a positive number";
-					}
-					break;
-				case 'minimumContribution':
-					if(value < 0) {
-						errorMessage = "Minimum contribution needs to be a positive number";
-					}
-					break;
-			}
-
-			if(errorMessage){
-				this.setFormValueToState(
-					formName,
-					formValues,
-					errorMessage,
-					value
-				);
-				this.setState({errorMessage});
-			}
-
-			//todo validate again 
-		})
-
-		console.log(this.state.form.minimumContribution)
-		console.log(this.state.form.title)
-	}
-
-	setFormValueToState = (formFieldName: any, formFieldValues: any, errorMessage: any, value: any) => {
-		this.setState({
-			form : {
-				...this.state.form,
-				[formFieldName]: {
-					...formFieldValues,
-					errorMessage,
-					value
+				else if((value as string).length > 80) {
+					errorMessage = "Campaign title should not be longer than 80 characters";
 				}
-			}
+				else errorMessage = "";
+				break;
+			case 'minimumContribution':
+				if(!value){
+					errorMessage = "Minimum contribution cannot be empty";
+				}
+				else if(!_.gt(value, 0)) {
+					errorMessage = "Minimum contribution needs to be a positive number";
+				}
+				else errorMessage = "";
+				break;
+		}
+
+		this.setState({
+			[id] : {
+				value,
+				errorMessage,
+				isValid: _.isEmpty(errorMessage)
+			},
+			errorMessage
 		});
 	}
 
-	onSubmit = (event : FormEvent) => {
+	onSubmit = async (event : FormEvent) => {
+		LoaderService.loading(true);
 		event.preventDefault();
-		console.log("onSubmit");
+		try {
+			console.log(this.state)
+			await CampaignFactory.createCamping(
+				this.state.minimumContribution.value,
+				this.state.title.value
+			);
+		}
+		catch(e : any) {
+			M.toast({ html: e.message});
+		}
+		LoaderService.loading(false);
 	}
 
 	render = () => {
@@ -110,22 +96,30 @@ class NewCampaign extends React.Component {
 					<Col l={8} m={6} s={12}>
 						<form className="campaign-form" 
 							onSubmit={this.onSubmit} 
-							onChange={this.onChangeForm}>
+							onChange={this.validateForm}>
 							<Textarea id='title'
 								disabled={!this.state.account}
 								label="* Title"
-								data-length={80}/>
+								data-length={80}
+								className={`${this.state.title.errorMessage? "invalid":""}`}/>
+							<CardPanel className="error-panel"
+								style={{
+									display: this.state.title.errorMessage ? "block" : "none"
+								}}>{this.state.title.errorMessage}</CardPanel>
 							<TextInput id='minimumContribution'
 								disabled={!this.state.account}
 								label="* Minimum contribution"
 								type="number"
-								inputClassName="hide-scrollbar"/>
+								inputClassName={
+									`hide-scrollbar ${this.state.minimumContribution.errorMessage? "invalid":""}`}/>
 							<CardPanel className="error-panel"
 								style={{
-									display: this.state.errorMessage ? "block" : "none"
-								}}>{this.state.errorMessage}</CardPanel>
+									display: this.state.minimumContribution.errorMessage ? "block" : "none"
+								}}>{this.state.minimumContribution.errorMessage}</CardPanel>
 							<Col className="form-footer">
-								<Button disabled={!this.state.account || !!this.state.errorMessage}> 
+								<Button disabled={
+									!this.state.minimumContribution.isValid || !this.state.title.isValid
+								}> 
 									<Icon>add</Icon>
 									<span>Create</span>
 								</Button>

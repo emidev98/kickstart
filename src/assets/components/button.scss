@@ -1,9 +1,9 @@
 @import '../variables.scss';
 
 .btn {
-    background: transparent;
     box-shadow: none;
-    color: rgba(255, 255, 255, 0.55);
+    color: $button-text-color;
+    background: rgba(255, 255, 255, 0.05);;
     min-height: 3em;
 
     &:hover{
@@ -12,7 +12,4 @@
         box-shadow: none;
     }
 
-    i {
-        margin-right: 0.5em;
-    }
 }

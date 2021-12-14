@@ -35,13 +35,16 @@
     }
 
     .form-footer {
-        margin: 2.5em 0 1em 0;
+        margin-bottom: 1em;
 
         .btn{
             display: flex;
             align-items: center;
             justify-content: center;
             
+            i {
+                margin-right: 0.5em;
+            }
         }
     }
 }

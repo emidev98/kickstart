@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 export default class Web3Service {
 	static provider: any;
 	static account = new BehaviorSubject("");
-	static eventLisenersAvailable = false;
+	static eventListenersAvailable = false;
 
 	static init() {
 		this.connectProvider();
@@ -41,7 +41,7 @@ export default class Web3Service {
 			const account = await provider.request({ method: "eth_requestAccounts" });
 			this.account.next(account[0]);
 
-			if(!this.eventLisenersAvailable){
+			if(!this.eventListenersAvailable){
 				this.addEventListeners();
 			}
 		} 
@@ -49,7 +49,7 @@ export default class Web3Service {
 	}
 
 	private static addEventListeners(){
-		this.eventLisenersAvailable = true;
+		this.eventListenersAvailable = true;
 		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => {
 			this.account.next(account[0]);
 		});

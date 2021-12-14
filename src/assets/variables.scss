@@ -36,16 +36,16 @@
 // 1. Colors
 // ==========================================================================
 
-$primary-color: #3C4856;
+$primary-color: #3c4856;
 $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
 
 $secondary-color: #556578;
 $success-color: color("green", "base");
-$error-color: rgba(244, 67, 54, .5);
+$error-color: rgba(244, 67, 54, .7);
 $link-color: color("light-blue", "darken-1");
 
-$text-color: rgba(255, 255, 255, 0.72);
+$text-color: rgba(255, 255, 255, 0.7);
 $almost-white: rgba(255, 255, 255, 0.8);
 
 $disabled-color: rgba(0,0,0,.42);
@@ -62,6 +62,7 @@ $disabled-background: rgba(0,0,0,0.1);
 // ==========================================================================
 
 // Shared styles
+$button-text-color: rgba(255, 255, 255, .8);
 // $button-border: none !default;
 // $button-background-focus: lighten($secondary-color, 4%) !default;
 // $button-font-size: 14px !default;
