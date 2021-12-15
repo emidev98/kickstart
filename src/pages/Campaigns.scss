@@ -3,7 +3,13 @@
 
     .collection-item {
 
+        &:last-child {
+            margin-bottom: 0;
+            
+        }
+
         .collection-right {
+            flex-direction: row;
 
             .btn {
                 display: flex;
@@ -22,7 +28,7 @@
             flex-direction: column;
 
             .collection-right {
-                flex-direction: row;
+                margin-top: 1em;
 
                 .btn {
                     display: flex;

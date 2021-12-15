@@ -110,6 +110,7 @@ class AppNavbar extends React.Component {
 				</NavLink>
 				{this.state.account ? (
 					<a>
+						<Icon>account_balance_wallet</Icon>
 						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>
 					</a>
 				) : (
@@ -131,7 +132,8 @@ class AppNavbar extends React.Component {
 					trigger={
 						<a>
 							<Icon>keyboard_arrow_down</Icon>
-							<span>Networks ({this.state.selectedBlockchain.name})</span>
+							<span className="networks-wording">Network&nbsp;</span>
+							<span>{this.state.selectedBlockchain.name}</span>
 						</a>
 					}
 				>

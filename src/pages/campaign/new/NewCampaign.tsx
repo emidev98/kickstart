@@ -1,12 +1,23 @@
 import _ from "lodash";
 import React, { BaseSyntheticEvent, FormEvent } from "react";
 import { Button, Card, CardPanel, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
+import { useNavigate, NavigateFunction } from "react-router-dom";
 import CampaignFactory from "../../../services/CampaignFactory";
 import LoaderService from "../../../services/LoaderService";
 import Web3Service from "../../../services/Web3Service";
 import "./NewCampaign.scss";
 
-class NewCampaign extends React.Component {
+type Props = {
+	navigate: NavigateFunction;
+};
+
+function NewCampaign(props : any) {
+	const navigate = useNavigate();
+
+	return <NewCampaignComponent {...props} navigate={navigate}/>
+}
+
+class NewCampaignComponent extends React.Component<Props> {
 
 	state = {
 		title: {
@@ -70,19 +81,19 @@ class NewCampaign extends React.Component {
 	}
 
 	onSubmit = async (event : FormEvent) => {
-		LoaderService.loading(true);
 		event.preventDefault();
+		LoaderService.loading(true);
 		try {
-			console.log(this.state)
 			await CampaignFactory.createCamping(
 				this.state.minimumContribution.value,
 				this.state.title.value
 			);
+			this.props.navigate("/");
 		}
 		catch(e : any) {
 			M.toast({ html: e.message});
+			LoaderService.loading(false);
 		}
-		LoaderService.loading(false);
 	}
 
 	render = () => {
@@ -109,7 +120,6 @@ class NewCampaign extends React.Component {
 							<TextInput id='minimumContribution'
 								disabled={!this.state.account}
 								label="* Minimum contribution"
-								type="number"
 								inputClassName={
 									`hide-scrollbar ${this.state.minimumContribution.errorMessage? "invalid":""}`}/>
 							<CardPanel className="error-panel"

@@ -3,7 +3,12 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
+	"extends": [
+		"eslint:recommended", 
+		"plugin:react/recommended", 
+		"plugin:@typescript-eslint/recommended",
+	    "plugin:react-hooks/recommended"
+	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaFeatures": {
@@ -11,8 +16,14 @@
 		},
 		"ecmaVersion": 12
 	},
-	"plugins": ["react", "@typescript-eslint"],
+	"plugins": [
+		"react",
+		"@typescript-eslint",
+		"react-hooks"
+	],
 	"rules": {
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn",
 		"linebreak-style": ["error", "unix"],
 		"quotes": ["warn", "double"],
 		"semi": ["warn", "always"],
