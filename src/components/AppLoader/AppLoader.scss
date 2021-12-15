@@ -1,3 +1,5 @@
+@import "./../../assets/variables.scss";
+
 .app-loader{
     display: none;
     flex-direction: column;
@@ -22,7 +24,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: white;
+        color: $almost-white;
         position: absolute;
         
         img {

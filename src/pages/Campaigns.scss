@@ -1,38 +1,21 @@
+
 .collection {
-    margin: 1rem 0;
-    border-radius: 0;
-    border: 0;
 
     .collection-item {
-        display: flex;
-        justify-content: space-between;
-        border-radius: 0.25em;
-        border: solid 1px rgba(255, 255, 255, 0.15);
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1em 2em;
-        margin-bottom: 1.5em;
 
         &:last-child {
-            border: solid 1px rgba(255, 255, 255, 0.15);
-
+            margin-bottom: 0;
+            
         }
 
-        .title{
-            color: white;
+        .collection-right {
+            flex-direction: row;
 
-        }
-
-        .collection-right{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 0;
-
-            .collection-list-item {
+            .btn {
                 display: flex;
                 align-items: center;
+                margin: 0.5em;
                 
-
             }
         }
     }
@@ -44,15 +27,18 @@
         .collection-item {
             flex-direction: column;
 
-        }
-        
-        .collection-item .collection-right {
-            flex-direction: row;
-            
-            .btn {
-                
-                i{
-                    font-size: 2rem;
+            .collection-right {
+                margin-top: 1em;
+
+                .btn {
+                    display: flex;
+                    align-items: center;
+                    margin: 0.5em;
+
+                    i{
+                        font-size: 2rem;
+
+                    }
                 }
             }
         }

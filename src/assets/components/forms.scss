@@ -1,0 +1,32 @@
+@import "./../variables.scss";
+
+.input-field {
+    
+    input,
+    textarea{
+        color: white;
+        
+        &:disabled{
+            background-color: $disabled-background !important;
+        }
+
+        &.hide-scrollbar {
+            /* Chrome, Safari, Edge, Opera */
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+
+            /* Firefox */
+            &[type=number] {
+            -moz-appearance: textfield;
+            }
+        }
+    }
+
+    label{
+        padding: 0 0.5em;
+
+    }    
+}

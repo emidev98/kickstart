@@ -1,0 +1,15 @@
+@import '../variables.scss';
+
+.btn {
+    box-shadow: none;
+    color: $button-text-color;
+    background: rgba(255, 255, 255, 0.05);;
+    min-height: 3em;
+
+    &:hover{
+        color: $almost-white;
+        background-color: rgba(0, 0, 0, 0.1);
+        box-shadow: none;
+    }
+
+}

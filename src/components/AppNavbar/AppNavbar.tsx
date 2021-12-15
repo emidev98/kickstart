@@ -26,22 +26,18 @@ class AppNavbar extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.initBlockchain();
+		this.setState({
+			selectedBlockchain: BlockchainService.selected
+		});
+		
 		Web3Service.account
 			.subscribe((account)=> {
-				console.log(account)
 				this.setState({account})
 			});
 	};  
 	
 	componentWillUnmount = () => {
 		Web3Service.account.unsubscribe();
-	};
-
-	initBlockchain = () => {
-		this.setState({
-			selectedBlockchain: BlockchainService.selected
-		});
 	};
 
 	getContractExplorerUrl = () => {
@@ -57,15 +53,23 @@ class AppNavbar extends React.Component {
 	};
 
 	onConnect = async () => {
-		LoaderService.setLoading(true);
+		LoaderService.loading(true);
 		try {
 			await Web3Service.connectMetamask(true);
 		}
 		catch (e: any) {
 			M.toast({ html: e.message});
 		}
-		LoaderService.setLoading(false);
+		LoaderService.loading(false);
 	};
+
+	onToggleDropdownClass = (element : Element) =>{
+		// Todo toggle dropdown class
+		document.getElementById("change-network-dropdown")
+			?.classList
+			.toggle("visible")
+	
+	}
 
 	renderBrand = () => {
 		return (
@@ -93,19 +97,20 @@ class AppNavbar extends React.Component {
 
 	render = () => {
 		return (
-			<Navbar alignLinks="right" brand={this.renderBrand()} menuIcon={<Icon>menu</Icon>}>
+			<Navbar alignLinks="right" 
+				brand={this.renderBrand()} 
+				menuIcon={<Icon>menu</Icon>}>
 				<NavLink to="/">
 					<Icon>list</Icon>
 					<span>Campaigns</span>
 				</NavLink>
-				{this.state.account ? (
-					<NavLink to="/campaigns/new">
-						<Icon>add</Icon>
-						<span>New</span>
-					</NavLink>
-				) : ("")}
+				<NavLink to="/campaigns/new">
+					<Icon>add</Icon>
+					<span>New</span>
+				</NavLink>
 				{this.state.account ? (
 					<a>
+						<Icon>account_balance_wallet</Icon>
 						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>
 					</a>
 				) : (
@@ -119,13 +124,16 @@ class AppNavbar extends React.Component {
 					options={{
 						constrainWidth: false,
 						coverTrigger: false,
+						onOpenStart: this.onToggleDropdownClass,
+						onCloseStart: this.onToggleDropdownClass ,
 						inDuration: 120,
 						outDuration: 120
 					}}
 					trigger={
 						<a>
 							<Icon>keyboard_arrow_down</Icon>
-							<span>Networks ({this.state.selectedBlockchain.name})</span>
+							<span className="networks-wording">Network&nbsp;</span>
+							<span>{this.state.selectedBlockchain.name}</span>
 						</a>
 					}
 				>
