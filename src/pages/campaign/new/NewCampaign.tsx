@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { BaseSyntheticEvent, FormEvent } from "react";
 import { Button, Card, CardPanel, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
 import { useNavigate, NavigateFunction } from "react-router-dom";
+import BlockchainService from "../../../services/BlockchainService";
 import CampaignFactory from "../../../services/CampaignFactory";
 import LoaderService from "../../../services/LoaderService";
 import Web3Service from "../../../services/Web3Service";
@@ -119,7 +120,7 @@ class NewCampaignComponent extends React.Component<Props> {
 								}}>{this.state.title.errorMessage}</CardPanel>
 							<TextInput id='minimumContribution'
 								disabled={!this.state.account}
-								label="* Minimum contribution"
+								label={`* Minimum ${BlockchainService.selected.currency} contribution`}
 								inputClassName={
 									`hide-scrollbar ${this.state.minimumContribution.errorMessage? "invalid":""}`}/>
 							<CardPanel className="error-panel"
