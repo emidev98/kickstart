@@ -23,7 +23,7 @@ class CampaignService {
 			approversCount: summary[3],
 			manager: summary[4],
 			title: summary[5]
-		};
+		} as ICampaign;
 	};
 
 	static getCampingsSummary: (addresses: Array<string>) => Promise<Array<ICampaign>> = (addresses) => {
