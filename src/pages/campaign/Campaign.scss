@@ -1,0 +1,16 @@
+.campaign{
+    
+    .card{
+        
+        .address-formatter-wrapper {
+            display: flex;
+        }
+    }
+}
+
+@media only screen and (max-width : 992px) {
+    .campaign {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}

@@ -34,6 +34,17 @@ class CampaignService {
 		);
 	};
 
+	static contributeToCampaign = async (address: string, contribution: string) => {
+		const accounts = await Web3Service.provider.eth.getAccounts();
+		return CampaignService.getCamping(address)
+			.methods
+			.contribute()
+			.send({
+				from: accounts[0],
+				value: Web3Service.provider.utils.toWei(contribution, 'ether')
+			});
+	};
+
 	static getCampingRequests = async (address: string) => {
 		const campaign = CampaignService.getCamping(address);
 		const approversCount = await campaign.methods.approversCount().call();

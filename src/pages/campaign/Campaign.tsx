@@ -1,7 +1,8 @@
 import React from "react";
-import { Card, CardTitle, Col, Icon, Row } from "react-materialize";
-import { Link, useParams } from "react-router-dom";
+import { Button, Card, CardPanel, Col, Icon, Row, TextInput } from "react-materialize";
+import { useParams } from "react-router-dom";
 import AddressFormatter from "../../components/Address/AddressFormatter";
+import ContributeForm from "../../components/ContributeForm/ContributeForm";
 import { ICampaign } from "../../models/ICampaign";
 import BlockchainService from "../../services/BlockchainService";
 import CampaignService from "../../services/CampaignService";
@@ -44,8 +45,6 @@ class CampaignComponent extends React.Component<Props>{
 		const campaign = await CampaignService.getCampingSummary(this.props.address);
 		this.setState({ campaign });
 
-		console.log(campaign)
-
 		LoaderService.loading(false);
 	}
 
@@ -53,14 +52,9 @@ class CampaignComponent extends React.Component<Props>{
 		const campaign = this.state.campaign;
 		const blockchain = BlockchainService.selected;
 
-		return <Row>
-			<Col m={6} s={12}>
-				<Card closeIcon={<Icon>close</Icon>}
-					reveal={<p>Short information about the scope of the campaign.</p>}
-					revealIcon={<Icon>more_vert</Icon>}
-					title="Title">
-						{campaign.title}
-				</Card>
+		return <Row className="campaign">
+			<Col s={12} m={12} l={4}>
+				<Card title={campaign.title}/>
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>Configured by the manager because votes need to worth 
 						at least a minimum amount of {blockchain.currency}&nbsp;
@@ -72,14 +66,15 @@ class CampaignComponent extends React.Component<Props>{
 				</Card>
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>Amount of money that the campaign has available to spend on
-						open requests when the donators approve the requests</p>}
+						open requests when the contributors approve the requests</p>}
 					revealIcon={<Icon>more_vert</Icon>}
 					title="Balance">
 						{Web3Service.provider.utils.fromWei(campaign.balance, "ether")}&nbsp;
 						{blockchain.currency}
 				</Card>
 			</Col>
-			<Col m={6} s={12}>
+
+			<Col s={12} m={12} l={4}>
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>Contract address that can be used to search on blockchain
 						explorer to se realtime or pending transactions.<br/>
@@ -91,11 +86,13 @@ class CampaignComponent extends React.Component<Props>{
 					</p>}
 					revealIcon={<Icon>more_vert</Icon>}
 					title="Address">
-					<AddressFormatter address={campaign.address}/>
+					<div className="address-formatter-wrapper">
+						<AddressFormatter address={campaign.address}/>
+					</div>
 				</Card>
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>Can create spending requests and send transactions only after at least
-						50% of the donators have approved the request.<br/>
+						50% of the contributors have approved the request.<br/>
 
 						<a href={blockchain.contractExplorer + "address/" + campaign.manager}
 							target="_blank" rel="noreferrer">
@@ -104,7 +101,9 @@ class CampaignComponent extends React.Component<Props>{
 					</p>}
 					revealIcon={<Icon>more_vert</Icon>}
 					title="Manager address">
-					<AddressFormatter address={campaign.manager}/>
+					<div className="address-formatter-wrapper">
+						<AddressFormatter address={campaign.manager}/>
+					</div>
 				</Card>
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>
@@ -115,6 +114,19 @@ class CampaignComponent extends React.Component<Props>{
 					revealIcon={<Icon>more_vert</Icon>}
 					title="Requests">
 						{campaign.requestsCount}
+				</Card>
+			</Col>
+
+			<Col s={12} m={12} l={4}>
+				<Card closeIcon={<Icon>close</Icon>}
+					reveal={<p>
+						Contributing to the campaign gives you voting power. To contribute, you at least 
+						need to donate the minimum amount configured by the manager
+					</p>}
+					revealIcon={<Icon>more_vert</Icon>}
+					title="Contribute">
+						<ContributeForm minimumContribution={campaign.minimumContribution}
+							campaignAddress={campaign.address}/>
 				</Card>
 			</Col>
 		</Row>

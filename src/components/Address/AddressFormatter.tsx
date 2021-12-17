@@ -20,7 +20,7 @@ export default class AddressFormatter extends React.Component<Props> {
 
     render = () => {
         return (
-            <span className={`address-formatter ${this.props.className}`}
+            <span className={`address-formatter ${this.props.className ? this.props.className : ""}`}
                 onMouseEnter={() => this.setTooltipShown(true)}
                 onMouseLeave={() => this.setTooltipShown(false)}
                 style={{
