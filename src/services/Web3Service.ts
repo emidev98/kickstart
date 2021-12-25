@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import BlockchainService from "./BlockchainService";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from "rxjs";
 
 export default class Web3Service {
 	static provider: any;
@@ -13,16 +13,14 @@ export default class Web3Service {
 		return this.connectMetamask();
 	}
 
-	static switchNetwork(chainId : string) {
+	static switchNetwork(chainId: string) {
 		BlockchainService.select(chainId);
-		if(this.account.value){
-			(window as any).ethereum
-				.request({
-					method: "wallet_switchEthereumChain", 
-					params: [{ chainId : chainId}]
-				});
-		}
-		else {
+		if (this.account.value) {
+			(window as any).ethereum.request({
+				method: "wallet_switchEthereumChain",
+				params: [{ chainId: chainId }]
+			});
+		} else {
 			this.connectProvider();
 			window.location.reload();
 		}
@@ -34,27 +32,26 @@ export default class Web3Service {
 	}
 
 	static async connectMetamask(shouldRaiseError?: boolean) {
-		const provider = await detectEthereumProvider() as any;
-		
-		if(provider){
+		const provider = (await detectEthereumProvider()) as any;
+
+		if (provider) {
 			this.provider = new Web3(provider);
 			const account = await provider.request({ method: "eth_requestAccounts" });
 			this.account.next(account[0]);
 
-			if(!this.eventListenersAvailable){
+			if (!this.eventListenersAvailable) {
 				this.addEventListeners();
 			}
-		} 
-		else if(shouldRaiseError) throw Error("Metamask not available");
+		} else if (shouldRaiseError) throw Error("Metamask not available");
 	}
 
-	private static addEventListeners(){
+	private static addEventListeners() {
 		this.eventListenersAvailable = true;
-		(<any>window).ethereum.on("accountsChanged", (account : Array<string>) => {
+		(<any>window).ethereum.on("accountsChanged", (account: Array<string>) => {
 			this.account.next(account[0]);
 		});
 
-		(<any>window).ethereum.on('chainChanged', (chainId : any) => {
+		(<any>window).ethereum.on("chainChanged", (chainId: any) => {
 			BlockchainService.select(chainId);
 			window.location.reload();
 		});

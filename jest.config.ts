@@ -4,7 +4,7 @@ const config: Config.InitialOptions = {
 	verbose: true,
 	preset: "ts-jest",
 	testEnvironment: "node",
-	testMatch: ["**/test/eth/**.test.ts"]
+	testMatch: ["**/test/contracts/**.test.ts"]
 };
 
 export default config;

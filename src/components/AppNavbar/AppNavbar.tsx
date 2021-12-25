@@ -6,12 +6,11 @@ import BlockchainService from "../../services/BlockchainService";
 import IBlockchain from "../../models/IBlockchain";
 import logo from "../../assets/img/logo.png";
 import Web3Service from "../../services/Web3Service";
-import M from 'materialize-css';
+import M from "materialize-css";
 import LoaderService from "../../services/LoaderService";
 import AddressFormatter from "../Address/AddressFormatter";
 
 class AppNavbar extends React.Component {
-
 	state = {
 		selectedBlockchain: {
 			name: "",
@@ -22,20 +21,19 @@ class AppNavbar extends React.Component {
 			chainId: "",
 			icon: ""
 		},
-		account : ""
+		account: ""
 	};
 
 	componentDidMount = () => {
 		this.setState({
 			selectedBlockchain: BlockchainService.selected
 		});
-		
-		Web3Service.account
-			.subscribe((account)=> {
-				this.setState({account})
-			});
-	};  
-	
+
+		Web3Service.account.subscribe((account) => {
+			this.setState({ account });
+		});
+	};
+
 	componentWillUnmount = () => {
 		Web3Service.account.unsubscribe();
 	};
@@ -48,7 +46,7 @@ class AppNavbar extends React.Component {
 
 	onSelectBlockchain = (blockchain: IBlockchain) => {
 		if (blockchain.selected) return;
-		
+
 		Web3Service.switchNetwork(blockchain.chainId);
 	};
 
@@ -56,20 +54,17 @@ class AppNavbar extends React.Component {
 		LoaderService.loading(true);
 		try {
 			await Web3Service.connectMetamask(true);
-		}
-		catch (e: any) {
-			M.toast({ html: e.message});
+		} catch (err) {
+			const { message } = err as Error;
+			M.toast({ html: message });
 		}
 		LoaderService.loading(false);
 	};
 
-	onToggleDropdownClass = (element : Element) =>{
+	onToggleDropdownClass = () => {
 		// Todo toggle dropdown class
-		document.getElementById("change-network-dropdown")
-			?.classList
-			.toggle("visible")
-	
-	}
+		document.getElementById("change-network-dropdown")?.classList.toggle("visible");
+	};
 
 	renderBrand = () => {
 		return (
@@ -85,9 +80,11 @@ class AppNavbar extends React.Component {
 			.filter((blockchain) => blockchain.contractAddress)
 			.map((blockchain, index) => {
 				return (
-					<a className={blockchain.selected ? "selected" : ""}
+					<a
+						className={blockchain.selected ? "selected" : ""}
 						onClick={() => this.onSelectBlockchain(blockchain)}
-						key={index}>
+						key={index}
+					>
 						<div className={`network-logo ${blockchain.icon}`} />
 						<span>{blockchain.name}</span>
 					</a>
@@ -97,9 +94,7 @@ class AppNavbar extends React.Component {
 
 	render = () => {
 		return (
-			<Navbar alignLinks="right" 
-				brand={this.renderBrand()} 
-				menuIcon={<Icon>menu</Icon>}>
+			<Navbar alignLinks="right" brand={this.renderBrand()} menuIcon={<Icon>menu</Icon>}>
 				<NavLink to="/">
 					<Icon>list</Icon>
 					<span>Campaigns</span>
@@ -111,7 +106,7 @@ class AppNavbar extends React.Component {
 				{this.state.account ? (
 					<a>
 						<Icon>account_balance_wallet</Icon>
-						<AddressFormatter maxWidth="92.46px" address={this.state.account}/>
+						<AddressFormatter maxWidth="92.46px" address={this.state.account} />
 					</a>
 				) : (
 					<a onClick={() => this.onConnect()}>
@@ -125,7 +120,7 @@ class AppNavbar extends React.Component {
 						constrainWidth: false,
 						coverTrigger: false,
 						onOpenStart: this.onToggleDropdownClass,
-						onCloseStart: this.onToggleDropdownClass ,
+						onCloseStart: this.onToggleDropdownClass,
 						inDuration: 120,
 						outDuration: 120
 					}}

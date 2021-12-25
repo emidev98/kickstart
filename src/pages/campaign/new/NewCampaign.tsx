@@ -12,125 +12,131 @@ type Props = {
 	navigate: NavigateFunction;
 };
 
-function NewCampaign(props : any) {
+function NewCampaign(props: any) {
 	const navigate = useNavigate();
 
-	return <NewCampaignComponent {...props} navigate={navigate}/>
+	return <NewCampaignComponent {...props} navigate={navigate} />;
 }
 
 class NewCampaignComponent extends React.Component<Props> {
-
 	state = {
 		title: {
 			value: "",
 			errorMessage: "",
-			isValid:  false
+			isValid: false
 		},
 		minimumContribution: {
 			value: "",
 			errorMessage: "",
-			isValid:  false
+			isValid: false
 		},
 		errorMessage: "",
 		account: ""
-	}
+	};
 
 	componentDidMount = () => {
-		Web3Service.account
-			.subscribe((account)=> {
-				this.setState({account})
-			});
-	}
+		Web3Service.account.subscribe((account) => {
+			this.setState({ account });
+		});
+	};
 
 	validateForm = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
-		const { id, value } : { 
-			id: "title" | "minimumContribution",
-			value: string | number
+		const {
+			id,
+			value
+		}: {
+			id: "title" | "minimumContribution";
+			value: string | number;
 		} = event.target;
 		let errorMessage = "";
 
-		switch(id){
-			case 'title':
-				if(!value) {
+		switch (id) {
+			case "title":
+				if (!value) {
 					errorMessage = "Write a title for your campaign";
-				}
-				else if((value as string).length > 80) {
+				} else if ((value as string).length > 80) {
 					errorMessage = "Campaign title should not be longer than 80 characters";
-				}
-				else errorMessage = "";
+				} else errorMessage = "";
 				break;
-			case 'minimumContribution':
-				if(!value){
+			case "minimumContribution":
+				if (!value) {
 					errorMessage = "Minimum contribution cannot be empty";
-				}
-				else if(!_.gt(value, 0)) {
+				} else if (!_.gt(value, 0)) {
 					errorMessage = "Minimum contribution needs to be a positive number";
-				}
-				else errorMessage = "";
+				} else errorMessage = "";
 				break;
 		}
 
 		this.setState({
-			[id] : {
+			[id]: {
 				value,
 				errorMessage,
 				isValid: _.isEmpty(errorMessage)
 			},
 			errorMessage
 		});
-	}
+	};
 
-	onSubmit = async (event : FormEvent) => {
+	onSubmit = async (event: FormEvent) => {
 		event.preventDefault();
 		LoaderService.loading(true);
 		try {
-			await CampaignFactory.createCamping(
-				this.state.minimumContribution.value,
-				this.state.title.value
-			);
+			await CampaignFactory.createCamping(this.state.minimumContribution.value, this.state.title.value);
 			this.props.navigate("/");
-		}
-		catch(e : any) {
-			M.toast({ html: e.message});
+		} catch (err: any) {
+			const { message } = err as Error;
+			M.toast({ html: message });
 			LoaderService.loading(false);
 		}
-	}
+	};
 
 	render = () => {
 		return (
-			<Card className="new-campaign" header={
-				<div className="card-header">
-					<h5>Create new campaign</h5>
-				</div>
-			}>
+			<Card
+				className="new-campaign"
+				header={
+					<div className="card-header">
+						<h5>Create new campaign</h5>
+					</div>
+				}
+			>
 				<Row>
 					<Col l={8} m={6} s={12}>
-						<form className="campaign-form" 
-							onSubmit={this.onSubmit} 
-							onChange={this.validateForm}>
-							<Textarea id='title'
+						<form className="campaign-form" onSubmit={this.onSubmit} onChange={this.validateForm}>
+							<Textarea
+								id="title"
 								disabled={!this.state.account}
 								label="* Title"
 								data-length={80}
-								className={`${this.state.title.errorMessage? "invalid":""}`}/>
-							<CardPanel className="error-panel"
+								className={`${this.state.title.errorMessage ? "invalid" : ""}`}
+							/>
+							<CardPanel
+								className="error-panel"
 								style={{
 									display: this.state.title.errorMessage ? "block" : "none"
-								}}>{this.state.title.errorMessage}</CardPanel>
-							<TextInput id='minimumContribution'
+								}}
+							>
+								{this.state.title.errorMessage}
+							</CardPanel>
+							<TextInput
+								id="minimumContribution"
 								disabled={!this.state.account}
 								label={`* Minimum contribution (on ${BlockchainService.selected.currency})`}
-								inputClassName={
-									`hide-scrollbar ${this.state.minimumContribution.errorMessage? "invalid":""}`}/>
-							<CardPanel className="error-panel"
+								inputClassName={`hide-scrollbar ${
+									this.state.minimumContribution.errorMessage ? "invalid" : ""
+								}`}
+							/>
+							<CardPanel
+								className="error-panel"
 								style={{
 									display: this.state.minimumContribution.errorMessage ? "block" : "none"
-								}}>{this.state.minimumContribution.errorMessage}</CardPanel>
+								}}
+							>
+								{this.state.minimumContribution.errorMessage}
+							</CardPanel>
 							<Col className="form-footer">
-								<Button disabled={
-									!this.state.minimumContribution.isValid || !this.state.title.isValid
-								}> 
+								<Button disabled={!this.state.minimumContribution.isValid || !this.state.title.isValid}>
 									<Icon>add</Icon>
 									<span>Create</span>
 								</Button>
@@ -142,28 +148,26 @@ class NewCampaignComponent extends React.Component<Props> {
 						<ul className="campaign-description">
 							<li>
 								To create a new campaign install and connect your
-								<a href="https://metamask.io/download.html" 
-									rel="noreferrer" 
-									target="_blank"> Metamask wallet</a>.
+								<a href="https://metamask.io/download.html" rel="noreferrer" target="_blank">
+									{" "}
+									Metamask wallet
+								</a>
+								.
+							</li>
+
+							<li>Everyone can create as many campaigns as needed.</li>
+
+							<li>
+								When a campaign is created the address used to connect is assigned as manager to the
+								campaign.
 							</li>
 
 							<li>
-								Everyone can create as many campaigns as needed.
+								The manager can create spending requests which needs to be approved by at least 50% of
+								people who donate to the campaign in order to be executed by the manager.
 							</li>
 
-							<li>
-								When a campaign is created the address used to connect is assigned as manager
-								to the campaign.
-							</li>
-							
-							<li>
-								The manager can create spending requests which needs to be approved by at least 
-								50% of people who donate to the campaign in order to be executed by the manager.
-							</li>
-
-							<li>
-								Introduce a campaign title and a minimum accepted transaction contribution
-							</li>
+							<li>Introduce a campaign title and a minimum accepted transaction contribution</li>
 						</ul>
 					</Col>
 				</Row>

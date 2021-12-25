@@ -7,7 +7,7 @@
 		"currency": "ether",
 		"chainId": "0x1",
 		"icon": "ethereum",
-		"version" : 1
+		"version": 1
 	},
 	{
 		"name": "Rinkeby",
@@ -17,7 +17,7 @@
 		"currency": "ether",
 		"chainId": "0x4",
 		"icon": "ethereum",
-		"version" : 1,
+		"version": 1,
 		"selected": true
 	},
 	{
@@ -28,7 +28,7 @@
 		"currency": "one",
 		"chainId": "0x63564c40",
 		"icon": "harmony",
-		"version" : 1
+		"version": 1
 	},
 	{
 		"name": "Harmony Testnet",
@@ -38,7 +38,7 @@
 		"currency": "one",
 		"chainId": "0x6357d2e0",
 		"icon": "harmony",
-		"version" : 1
+		"version": 1
 	},
 	{
 		"name": "Polygon Matic",
@@ -48,7 +48,7 @@
 		"currency": "Matic",
 		"chainId": "0x89",
 		"icon": "polygon",
-		"version" : 1
+		"version": 1
 	},
 	{
 		"name": "Polygon Matic Mumbai",
@@ -58,6 +58,6 @@
 		"currency": "Matic",
 		"chainId": "0x13881",
 		"icon": "polygon",
-		"version" : 1
+		"version": 1
 	}
 ]

@@ -2,13 +2,17 @@ import ganache from "ganache-core";
 import Web3 from "web3";
 import compiledFactory from "../../contracts/build/CampaignFactory.json";
 import compiledCampaing from "../../contracts/build/Campaign.json";
+import { Provider } from "@truffle/hdwallet-provider/dist/constructor/types";
+import Contract from "web3";
 
-const web3 = new Web3(ganache.provider() as any);
+const web3 = new Web3(ganache.provider() as Provider);
 
-let accounts: any;
-let factory: any;
-let campaignAddress: any;
-let campaign: any;
+let accounts: string[];
+/* eslint @typescript-eslint/no-explicit-any: "off" */
+let factory: Contract | any;
+let campaignAddress: string;
+/* eslint @typescript-eslint/no-explicit-any: "off" */
+let campaign: Contract | any;
 
 beforeEach(async () => {
 	accounts = await web3.eth.getAccounts();
@@ -62,8 +66,9 @@ describe("Campaigns", () => {
 				from: accounts[1]
 			});
 			expect(false).toBe(true);
-		} catch (err: any) {
-			expect(err.message).toBe("VM Exception while processing transaction: revert");
+		} catch (err) {
+			const { message } = err as Error;
+			expect(message).toBe("VM Exception while processing transaction: revert");
 		}
 	});
 

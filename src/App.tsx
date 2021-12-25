@@ -19,10 +19,9 @@ class App extends React.Component {
 	};
 
 	componentDidMount = () => {
-		LoaderService.observers
-			.subscribe((loading: boolean) => {
-				this.setState({ loading });
-			});
+		LoaderService.observers.subscribe((loading: boolean) => {
+			this.setState({ loading });
+		});
 	};
 
 	render = () => {

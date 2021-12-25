@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const solc = require("solc");
 
 const buildPath = path.resolve(__dirname, "build");

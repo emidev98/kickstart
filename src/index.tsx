@@ -5,7 +5,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import Web3Service from "./services/Web3Service";
 
-Web3Service.init()
+Web3Service.init();
 
 ReactDOM.render(
 	<React.StrictMode>

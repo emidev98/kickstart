@@ -12,7 +12,7 @@ This project is structured as monorepo including both EVM compatible smart contr
 .
 ├── contracts                # Smart contracts and relevant blockchain stored
 ├── public                   # Website public folder used for static assets
-├── src                     
+├── src
 │   ├── assets               # App specific assets like SASS, icons...
 │   ├── components           # Generic components code for the website
 │   ├── contracts-interfaces # Exported interfaces from smart contracts
@@ -23,7 +23,8 @@ This project is structured as monorepo including both EVM compatible smart contr
     ├── contracts            # Smar contract tests
     └── ui                   # Frontend tests
 ```
-src: ```tree -d -A -I node_modules -L 2```
+
+src: `tree -d -A -I node_modules -L 2`
 
 ## Smart Contracts
 
@@ -39,6 +40,6 @@ The DEFI app is build out of two smart contracts and a struct:
 
 # User Interface
 
-The user interface implements two blockchain providers, [standard Web3](https://www.npmjs.com/package/web3) provider (read only) and [Metamask](https://www.npmjs.com/package/@metamask/detect-provider) (read and write). 
+The user interface implements two blockchain providers, [standard Web3](https://www.npmjs.com/package/web3) provider (read only) and [Metamask](https://www.npmjs.com/package/@metamask/detect-provider) (read and write).
 
 As of my experience using Angular I was influenced on service creation to isolate very specific logic e.g.create a campaign, switch network and isolate Web3 providers. As for the UI components [MaterializeCSS](https://react-materialize.github.io/react-materialize/?path=/story/*) applying the style of [DecentryFi](https://github.com/decentryfi/styleguide).
