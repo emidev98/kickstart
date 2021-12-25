@@ -3,10 +3,14 @@ import Campaign from "../contracts-interfaces/Campaign.json";
 import { ICampaign } from "../models/ICampaign";
 
 class CampaignService {
-
 	static getCamping = (address: string) => {
 		const contractInterface = JSON.parse(Campaign.interface);
 		return new Web3Service.provider.eth.Contract(contractInterface, address);
+	};
+
+	static getCampingManager = async (address: string) => {
+		const campaign = CampaignService.getCamping(address);
+		return campaign.methods.manager().call();
 	};
 
 	static getCampingSummary = async (address: string) => {

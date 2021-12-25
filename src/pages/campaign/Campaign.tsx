@@ -15,11 +15,11 @@ type Props = {
 	navigate: NavigateFunction;
 };
 
-function Campaign(props: any) {
+function Campaign() {
 	const { address } = useParams();
 	const navigate = useNavigate();
 
-	return <CampaignComponent {...props} address={address} navigate={navigate} />;
+	return <CampaignComponent address={address ? address : ""} navigate={navigate} />;
 }
 
 class CampaignComponent extends React.Component<Props> {

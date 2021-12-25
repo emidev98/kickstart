@@ -1,0 +1,12 @@
+.requests {
+    overflow: auto;
+    padding: 0;
+
+    th {
+        
+        &:first-child{
+            padding: 1em;
+            
+        }
+    }
+}

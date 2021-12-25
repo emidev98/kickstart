@@ -12,10 +12,10 @@ type Props = {
 	navigate: NavigateFunction;
 };
 
-function NewCampaign(props: any) {
+function NewCampaign() {
 	const navigate = useNavigate();
 
-	return <NewCampaignComponent {...props} navigate={navigate} />;
+	return <NewCampaignComponent navigate={navigate} />;
 }
 
 class NewCampaignComponent extends React.Component<Props> {
@@ -84,7 +84,7 @@ class NewCampaignComponent extends React.Component<Props> {
 		try {
 			await CampaignFactory.createCamping(this.state.minimumContribution.value, this.state.title.value);
 			this.props.navigate("/");
-		} catch (err: any) {
+		} catch (err) {
 			const { message } = err as Error;
 			M.toast({ html: message });
 			LoaderService.loading(false);

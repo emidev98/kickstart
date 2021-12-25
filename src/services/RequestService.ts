@@ -1,9 +1,9 @@
+import IRequest from "../models/IRequest";
 import CampaignService from "./CampaignService";
 import Web3Service from "./Web3Service";
 
 class RequestService {
-
-	static getCampingRequests = async (campaignAddress: string) => {
+	static getCampingRequests = async (campaignAddress: string): Promise<Array<IRequest>> => {
 		const campaign = CampaignService.getCamping(campaignAddress);
 		const approversCount = await campaign.methods.approversCount().call();
 		const requestCount = await campaign.methods.getRequestCount().call();
@@ -11,7 +11,7 @@ class RequestService {
 		const requests = await Promise.all(
 			Array(parseInt(requestCount))
 				.fill(null)
-				.map((request, index) => {
+				.map((_request, index) => {
 					return campaign.methods.requests(index).call();
 				})
 		);
@@ -19,9 +19,9 @@ class RequestService {
 		return requests.map((request) => {
 			return {
 				description: request[0],
-				value: request[1],
+				amount: request[1],
 				recipient: request[2],
-				complete: request[3],
+				finalized: request[3],
 				approvalCount: request[4],
 				approversCount: approversCount
 			};
@@ -29,8 +29,8 @@ class RequestService {
 	};
 
 	static createRequest = async (
-		campaignAddress : string, 
-		description: string, 
+		campaignAddress: string,
+		description: string,
 		amount: string,
 		recipientAddress: string
 	) => {
@@ -38,13 +38,9 @@ class RequestService {
 		const campaign = CampaignService.getCamping(campaignAddress);
 
 		await campaign.methods
-			.createRequest(
-				description, 
-				Web3Service.provider.utils.toWei(amount, 'ether'), 
-				recipientAddress
-			)
+			.createRequest(description, Web3Service.provider.utils.toWei(amount, "ether"), recipientAddress)
 			.send({ from: accounts[0] });
-	}
+	};
 
 	static approveRequest = async (campaignAddress: string, index: string) => {
 		const accounts = await Web3Service.provider.eth.getAccounts();

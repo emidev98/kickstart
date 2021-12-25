@@ -48,6 +48,12 @@ contract Campaign {
         }
     }
     
+    function hasApprovedRequest(uint index, address approverAddress) public view returns (bool) {
+        Request storage request = requests[index];
+
+        return request.approvals[approverAddress];
+    }
+
     function createRequest(string description, uint value, address recipient) public restricted {
         Request memory newRequest = Request({
             description : description,

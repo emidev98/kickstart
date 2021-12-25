@@ -31,7 +31,7 @@ export default class ContributeForm extends React.Component<Props> {
 		LoaderService.loading(true);
 		try {
 			await CampaignService.contributeToCampaign(this.props.campaignAddress, this.state.contribution);
-		} catch (err: any) {
+		} catch (err) {
 			const { message } = err as Error;
 			M.toast({ html: message });
 		}
