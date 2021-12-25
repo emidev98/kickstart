@@ -23,7 +23,7 @@ class CampaignService {
 			approversCount: summary[3],
 			manager: summary[4],
 			title: summary[5]
-		};
+		} as ICampaign;
 	};
 
 	static getCampingsSummary: (addresses: Array<string>) => Promise<Array<ICampaign>> = (addresses) => {
@@ -32,6 +32,17 @@ class CampaignService {
 				return CampaignService.getCampingSummary(address);
 			})
 		);
+	};
+
+	static contributeToCampaign = async (address: string, contribution: string) => {
+		const accounts = await Web3Service.provider.eth.getAccounts();
+		return CampaignService.getCamping(address)
+			.methods
+			.contribute()
+			.send({
+				from: accounts[0],
+				value: Web3Service.provider.utils.toWei(contribution, 'ether')
+			});
 	};
 
 	static getCampingRequests = async (address: string) => {

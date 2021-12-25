@@ -120,7 +120,7 @@ class NewCampaignComponent extends React.Component<Props> {
 								}}>{this.state.title.errorMessage}</CardPanel>
 							<TextInput id='minimumContribution'
 								disabled={!this.state.account}
-								label={`* Minimum ${BlockchainService.selected.currency} contribution`}
+								label={`* Minimum contribution (on ${BlockchainService.selected.currency})`}
 								inputClassName={
 									`hide-scrollbar ${this.state.minimumContribution.errorMessage? "invalid":""}`}/>
 							<CardPanel className="error-panel"

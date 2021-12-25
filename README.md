@@ -1,6 +1,6 @@
 # Kickstart
 
-Its a fork from [decentryfi/courses/kickstart](https://github.com/decentryfi/courses/tree/main/kickstart). This project is created with the propose of allowing people financing campaigns based on donators consensus, because in order to transfer funds the manager needs at least 50% of total donators approvals. This is possible thanks to Smart Contracts that are deployed on many EVM compatible networks.
+Its a fork from [decentryfi/courses/kickstart](https://github.com/decentryfi/courses/tree/main/kickstart). This project is created with the propose of allowing people financing campaigns based on contributors consensus, because in order to transfer funds the manager needs at least 50% of total contributors approvals. This is possible thanks to Smart Contracts that are deployed on many EVM compatible networks.
 
 The project is available on [Ethereum](https://ethereum.org/en/) but as the transactions are very expensive (at time of creating the project 8-12-2021) to make it viable we needed to deploy it on [HarmonyOne](https://www.harmony.one/) and [Polygon](https://polygon.technology/).
 

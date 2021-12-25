@@ -11,6 +11,7 @@ import LoaderService from "./services/LoaderService";
 import Requests from "./pages/campaign/requests/Requests";
 import NewRequest from "./pages/campaign/requests/new/NewRequest";
 import Request from "./pages/campaign/requests/request/Request";
+import Campaign from "./pages/campaign/Campaign";
 
 class App extends React.Component {
 	state = {
@@ -32,7 +33,7 @@ class App extends React.Component {
 					<Routes>
 						<Route path="/" element={<Campaigns />} />
 						<Route path="campaigns/new" element={<NewCampaign />} />
-						<Route path="campaigns/:address" element={<NewCampaign />} />
+						<Route path="campaigns/:address" element={<Campaign />} />
 						<Route path="campaigns/:address/requests" element={<Requests />} />
 						<Route path="campaigns/:address/requests/new" element={<NewRequest />} />
 						<Route path="campaigns/:address/requests/:requestAddress" element={<Request />} />

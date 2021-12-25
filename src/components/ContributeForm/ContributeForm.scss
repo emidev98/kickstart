@@ -1,0 +1,18 @@
+.contribute-forms {
+    display: flex;
+    flex-direction: column;
+
+    .input-field {
+        padding: 0;
+
+        label {
+            padding: 0;
+            
+        }
+    }
+
+    .btn {
+        width: 100%;
+
+    }
+}
