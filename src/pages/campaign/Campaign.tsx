@@ -197,7 +197,7 @@ class CampaignComponent extends React.Component<Props> {
 							</p>
 						}
 						revealIcon={<Icon>more_vert</Icon>}
-						title="Requests details"
+						title="View requests"
 						className="view-requests"
 					>
 						<Link to={`/campaigns/${campaign.address}/requests`}>

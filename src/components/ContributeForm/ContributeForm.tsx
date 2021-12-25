@@ -72,7 +72,6 @@ export default class ContributeForm extends React.Component<Props> {
 				<TextInput
 					id="contribution"
 					disabled={!this.state.account}
-					defaultValue={this.props.minimumContribution}
 					value={this.state.contribution}
 					label={`Contribution (on ${BlockchainService.selected.currency})`}
 					inputClassName={`hide-scrollbar ${this.state.errorMessage ? "invalid" : ""}`}
@@ -86,7 +85,10 @@ export default class ContributeForm extends React.Component<Props> {
 				>
 					{this.state.errorMessage}
 				</CardPanel>
-				<Button disabled={!!this.state.errorMessage}>Contribute</Button>
+				<Button disabled={!!this.state.errorMessage}>
+					<i className="material-icons">add</i>
+					Contribute
+				</Button>
 			</form>
 		);
 	};
