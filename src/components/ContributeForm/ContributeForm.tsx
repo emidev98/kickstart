@@ -9,7 +9,8 @@ import LoaderService from '../../services/LoaderService';
 
 type Props = {
 	minimumContribution: string,
-    campaignAddress: string
+    campaignAddress: string,
+    onContributeSuccessfully: Function
 };
 
 export default class ContributeForm extends React.Component<Props> {
@@ -36,6 +37,7 @@ export default class ContributeForm extends React.Component<Props> {
 		catch(e : any) {
 			M.toast({ html: e.message});
 		}
+        await this.props.onContributeSuccessfully();
         LoaderService.loading(false);
     }
     
@@ -45,7 +47,7 @@ export default class ContributeForm extends React.Component<Props> {
         const { value } = event.target;
         const { minimumContribution } = this.props;
         const parsedMinimumContribution = utils.fromWei(minimumContribution, "ether");
-        const parsedValue = parseInt(value);
+        const parsedValue = parseFloat(value);
         
         this.setState({contribution: value});
         
@@ -58,7 +60,7 @@ export default class ContributeForm extends React.Component<Props> {
 
         const parsedValueToWeb3 = utils.toWei(event.target.value ? event.target.value : "0", "ether");
         
-        if(_.lte(parsedValueToWeb3, parseInt(minimumContribution))){
+        if(_.lte(parsedValueToWeb3, parseFloat(minimumContribution))){
             this.setState({
                 errorMessage : `Contribution needs to be a number greater than
                 ${parsedMinimumContribution} ${BlockchainService.selected.currency}`

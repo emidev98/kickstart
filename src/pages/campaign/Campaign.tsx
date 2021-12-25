@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Card, CardPanel, Col, Icon, Row, TextInput } from "react-materialize";
-import { useParams } from "react-router-dom";
+import { Button, Card, Col, Icon, Row } from "react-materialize";
+import { Link, NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import AddressFormatter from "../../components/Address/AddressFormatter";
 import ContributeForm from "../../components/ContributeForm/ContributeForm";
 import { ICampaign } from "../../models/ICampaign";
@@ -11,13 +11,17 @@ import Web3Service from "../../services/Web3Service";
 import "./Campaign.scss";
 
 type Props = {
-	address: string
+	address: string,
+	navigate: NavigateFunction;
 };
 
 function Campaign(props: any) {
 	const { address } = useParams();
+	const navigate = useNavigate();
 
-	return <CampaignComponent {...props} address={address} />
+	return <CampaignComponent {...props} 
+		address={address}
+		navigate={navigate} />
 }
 
 class CampaignComponent extends React.Component<Props>{
@@ -42,15 +46,32 @@ class CampaignComponent extends React.Component<Props>{
 		Web3Service.account.subscribe((account) => {
 			this.setState({ account })
 		});
+		try { 
+			const campaign = await CampaignService.getCampingSummary(this.props.address);
+			this.setState({ campaign });
+		}
+		catch (e) {
+			M.toast({ html: `This campaign does not exist on '${BlockchainService.selected.name}'`});
+			this.props.navigate("/");
+		}
+		LoaderService.loading(false);
+	}
+
+	onContributeSuccessfully = async () => {
 		const campaign = await CampaignService.getCampingSummary(this.props.address);
 		this.setState({ campaign });
+	}
 
-		LoaderService.loading(false);
+	onNavigateToRequests = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		console.log(event)
 	}
 
 	render = () => {
 		const campaign = this.state.campaign;
 		const blockchain = BlockchainService.selected;
+		const isAccountAvailable = !!this.state.account;
+		const isManagerAccount = campaign.manager.toUpperCase() == this.state.account?.toUpperCase();
 
 		return <Row className="campaign">
 			<Col s={12} m={12} l={4}>
@@ -118,16 +139,53 @@ class CampaignComponent extends React.Component<Props>{
 			</Col>
 
 			<Col s={12} m={12} l={4}>
+				{ isAccountAvailable ? 
+					<Card closeIcon={<Icon>close</Icon>}
+						reveal={<p>
+							Contributing to the campaign gives you voting power. To contribute, you at least 
+							need to donate the minimum amount configured by the manager
+						</p>}
+						revealIcon={<Icon>more_vert</Icon>}
+						title="Contribute">
+							<ContributeForm minimumContribution={campaign.minimumContribution}
+								campaignAddress={campaign.address}
+								onContributeSuccessfully={this.onContributeSuccessfully}/>
+					</Card> : ""
+				}
 				<Card closeIcon={<Icon>close</Icon>}
 					reveal={<p>
-						Contributing to the campaign gives you voting power. To contribute, you at least 
-						need to donate the minimum amount configured by the manager
+						When you need further information about the campaigns just navigate to the 
+						requests that are open and you can validate if its the kind of campaign you
+						wish to support or if you already supported the campaign you can even vote
+						for the spending requests.
 					</p>}
 					revealIcon={<Icon>more_vert</Icon>}
-					title="Contribute">
-						<ContributeForm minimumContribution={campaign.minimumContribution}
-							campaignAddress={campaign.address}/>
+					title="Requests details"
+					className="view-requests">
+					<Link to={`/campaigns/${campaign.address}/requests`}>
+						<Button>
+							<i className="material-icons">list_alt</i>
+							View requests
+						</Button>
+					</Link>
 				</Card>
+				{ isManagerAccount ? 
+					<Card closeIcon={<Icon>close</Icon>}
+						reveal={<p>
+							Being the manager of this campaign you can create new spending requests 
+							to use the budget of your contributors.
+						</p>}
+						revealIcon={<Icon>more_vert</Icon>}
+						title="New request"
+						className="new-request">
+						<Link to={`/campaigns/${campaign.address}/requests/new`}>
+							<Button>
+								<i className="material-icons">playlist_add_circle</i>
+								New request
+							</Button>
+						</Link>
+					</Card>: ""
+				}
 			</Col>
 		</Row>
 	};
