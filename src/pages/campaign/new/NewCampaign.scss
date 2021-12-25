@@ -18,24 +18,8 @@
         width: 100%;
     }
 
-    .campaign-description {
-        margin: 0;
-
-        li {
-            margin: 0.5em 0;
-
-            &:first-child {
-                margin-top: 0;
-            }
-            
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-    }
-
     .form-footer {
-        margin-bottom: 1em;
+        margin: 1em 0 1em 0;
 
         .btn{
             display: flex;
