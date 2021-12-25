@@ -1,33 +1,34 @@
-import './AddressFormatter.scss';
-import React from 'react';
+import "./AddressFormatter.scss";
+import React from "react";
 
 type Props = {
-    address: string;
-    className?: string;
-    maxWidth?: string;
+	address: string;
+	className?: string;
+	maxWidth?: string;
 };
 
 export default class AddressFormatter extends React.Component<Props> {
+	state = {
+		address: "",
+		className: "",
+		maxWidth: "auto",
+		isTooltipShown: false
+	};
 
-    state = {
-        address: "",
-        className: "",
-        maxWidth: "auto",
-        isTooltipShown : false
-    }
+	setTooltipShown = (isTooltipShown: boolean) => this.setState({ isTooltipShown });
 
-    setTooltipShown = (isTooltipShown : boolean) => this.setState({isTooltipShown});
-
-    render = () => {
-        return (
-            <span className={`address-formatter ${this.props.className ? this.props.className : ""}`}
-                onMouseEnter={() => this.setTooltipShown(true)}
-                onMouseLeave={() => this.setTooltipShown(false)}
-                style={{
-                    maxWidth: this.props.maxWidth ? this.props.maxWidth : "auto"
-                }}>
-                {this.props.address}
-            </span>
-        );
-    };
+	render = () => {
+		return (
+			<span
+				className={`address-formatter ${this.props.className ? this.props.className : ""}`}
+				onMouseEnter={() => this.setTooltipShown(true)}
+				onMouseLeave={() => this.setTooltipShown(false)}
+				style={{
+					maxWidth: this.props.maxWidth ? this.props.maxWidth : "auto"
+				}}
+			>
+				{this.props.address}
+			</span>
+		);
+	};
 }

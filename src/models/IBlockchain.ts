@@ -1,11 +1,13 @@
-export default interface IBlockchain {
+interface IBlockchain {
 	name: string;
 	url: string;
 	contractExplorer: string;
 	contractAddress: string;
 	currency: string;
 	chainId: string;
-	icon: any;
-	version: number
+	icon: string;
+	version: number;
 	selected?: boolean;
 }
+
+export default IBlockchain;

@@ -4,25 +4,24 @@ import LocalStorageService from "./LocalStorageService";
 import * as _ from "lodash";
 
 class BlockchainService {
-
 	static get blockchains(): Array<IBlockchain> {
 		const storageChains = LocalStorageService.get().blockchains;
 
-		// If local storage is not used get all 
+		// If local storage is not used get all
 		// blockchains from config file
-		if(_.isEmpty(storageChains)){
+		if (_.isEmpty(storageChains)) {
 			LocalStorageService.setItem("blockchains", defaultChains);
 			return defaultChains as Array<IBlockchain>;
 		}
 
 		// Validate that all chains from local storage are up to date
 		// and delete the chains that are not existing anymore
-		// FIX: if there are more chains on the json file than 
+		// FIX: if there are more chains on the json file than
 		// loclastorage they will never be updated.
 		// FIX: unselect the previous chain.
-		const updatedChains = _.chain(storageChains) 
+		const updatedChains = _.chain(storageChains)
 			.map((storageChain) => {
-				const newChain = _.find(defaultChains, (defaultChain : IBlockchain) => {
+				const newChain = _.find(defaultChains, (defaultChain: IBlockchain) => {
 					const isSameChain = storageChain.chainId === defaultChain.chainId;
 					const isOutdated = storageChain.version < defaultChain.version;
 
@@ -35,12 +34,12 @@ class BlockchainService {
 				return _.find(defaultChains, (defaultChain) => newChain.chainId === defaultChain.chainId);
 			})
 			.value();
-		
+
 		// Find if there is still a selected chain
-		const selectedChain = _.find(updatedChains, chain => chain.selected);
+		const selectedChain = _.find(updatedChains, (chain) => chain.selected);
 
 		// If there is no selected chain use the first option
-		if(_.isUndefined(selectedChain)){
+		if (_.isUndefined(selectedChain)) {
 			updatedChains[0].selected = true;
 		}
 
@@ -49,24 +48,24 @@ class BlockchainService {
 		return updatedChains;
 	}
 
-	static select(chainId : string) {
-		const chains = _.map(BlockchainService.blockchains, (blockchain) =>{
-			delete blockchain.selected
+	static select(chainId: string) {
+		const chains = _.map(BlockchainService.blockchains, (blockchain) => {
+			delete blockchain.selected;
 			return blockchain;
 		});
 
-		// TODO Throw expection if chain does not exist ? 
-		const chain = _.find(chains, blockchain => blockchain.chainId == chainId) as IBlockchain;
+		// TODO Throw expection if chain does not exist ?
+		const chain = _.find(chains, (blockchain) => blockchain.chainId == chainId) as IBlockchain;
 		chain.selected = true;
-		
+
 		LocalStorageService.setItem("blockchains", chains);
 	}
 
 	static get selected(): IBlockchain {
 		const storage = LocalStorageService.get();
 
-		if(_.isEmpty(storage.blockchains)){
-			return _.find(BlockchainService.blockchains,blockchain => blockchain.selected) as IBlockchain;
+		if (_.isEmpty(storage.blockchains)) {
+			return _.find(BlockchainService.blockchains, (blockchain) => blockchain.selected) as IBlockchain;
 		}
 
 		return _.find(storage.blockchains, (blockchain: IBlockchain) => blockchain.selected);

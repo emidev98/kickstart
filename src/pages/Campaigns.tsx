@@ -10,7 +10,6 @@ import AddressFormatter from "../components/Address/AddressFormatter";
 import Web3Service from "../services/Web3Service";
 
 class Campaigns extends React.Component {
-
 	state = {
 		campaigns: new Array<ICampaign>(),
 		account: ""
@@ -22,10 +21,10 @@ class Campaigns extends React.Component {
 		const campaigns = await campaignFactory.methods.getDeployedCampaigns().call();
 		const campaignsSummary = await CampaignService.getCampingsSummary(campaigns);
 
-		Web3Service.account.subscribe(address => {
-			this.setState({account : address});
-		})
-		
+		Web3Service.account.subscribe((address) => {
+			this.setState({ account: address });
+		});
+
 		this.setState({ campaigns: campaignsSummary });
 		LoaderService.loading(false);
 	};
@@ -40,52 +39,58 @@ class Campaigns extends React.Component {
 						<li className="collection-item" key={index}>
 							<div className="collection-left">
 								<h5 className="title">{campaignSummary.title}</h5>
-								<AddressFormatter address={campaignSummary.address}/>
+								<AddressFormatter address={campaignSummary.address} />
 							</div>
 
 							<ul className="collection-right">
-								<Link to={`/campaigns/${campaignSummary.address}`} 
-									className="collection-list-item">
+								<Link to={`/campaigns/${campaignSummary.address}`} className="collection-list-item">
 									<Button
 										tooltip="Check the most important details of this campaign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
-										}}>
+										}}
+									>
 										<i className="material-icons">info_outline</i>
 									</Button>
 								</Link>
 
 								<Link
 									to={`/campaigns/${campaignSummary.address}/requests`}
-									className="collection-list-item">
+									className="collection-list-item"
+								>
 									<Button
 										tooltip="Check the requests that the manager has open for the campaign"
 										tooltipOptions={{
 											position: window.innerWidth > 992 ? "left" : "top",
 											outDuration: 120,
 											inDuration: 120
-										}}>
+										}}
+									>
 										<i className="material-icons">list_alt</i>
 									</Button>
 								</Link>
 
-								{isManagerAccount ?
-									<Link to={`/campaigns/${campaignSummary.address}/requests/new`}
-										className="collection-list-item">
+								{isManagerAccount ? (
+									<Link
+										to={`/campaigns/${campaignSummary.address}/requests/new`}
+										className="collection-list-item"
+									>
 										<Button
 											tooltip="Add a new request to your campaign"
 											tooltipOptions={{
 												position: window.innerWidth > 992 ? "left" : "top",
 												outDuration: 120,
 												inDuration: 120
-											}}>
+											}}
+										>
 											<i className="material-icons">playlist_add_circle</i>
 										</Button>
-									</Link> : 
+									</Link>
+								) : (
 									<div className="collection-list-item"></div>
-								}
+								)}
 							</ul>
 						</li>
 					);
