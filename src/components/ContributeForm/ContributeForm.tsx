@@ -73,7 +73,7 @@ export default class ContributeForm extends React.Component<Props> {
 					id="contribution"
 					disabled={!this.state.account}
 					value={this.state.contribution}
-					label={`Contribution (on ${BlockchainService.selected.currency})`}
+					label={`Contribution (in ${BlockchainService.selected.currency})`}
 					inputClassName={`hide-scrollbar ${this.state.errorMessage ? "invalid" : ""}`}
 					onChange={this.onTextInputChange}
 				/>

@@ -122,7 +122,7 @@ class NewCampaignComponent extends React.Component<Props> {
 							<TextInput
 								id="minimumContribution"
 								disabled={!this.state.account}
-								label={`* Minimum contribution (on ${BlockchainService.selected.currency})`}
+								label={`* Minimum contribution (in ${BlockchainService.selected.currency})`}
 								inputClassName={`hide-scrollbar ${
 									this.state.minimumContribution.errorMessage ? "invalid" : ""
 								}`}
@@ -145,7 +145,7 @@ class NewCampaignComponent extends React.Component<Props> {
 					</Col>
 
 					<Col l={4} m={6} s={12}>
-						<ul className="campaign-description">
+						<ul className="info-list">
 							<li>
 								To create a new campaign install and connect your
 								<a href="https://metamask.io/download.html" rel="noreferrer" target="_blank">
