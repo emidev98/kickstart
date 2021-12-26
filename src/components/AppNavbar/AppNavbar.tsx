@@ -101,7 +101,7 @@ class AppNavbar extends React.Component {
 				</NavLink>
 				<NavLink to="/campaigns/new">
 					<Icon>add</Icon>
-					<span>New</span>
+					<span>New Campaign</span>
 				</NavLink>
 				{this.state.account ? (
 					<a>
