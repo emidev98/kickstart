@@ -98,7 +98,7 @@ export default class RequestRow extends React.Component<Props> {
 							<Button className={`request-action ${!isManagerAddress ? "hide" : ""}`}
 								disabled={!hasConsensus}
 								onClick={() => this.props.onFinalize()}>
-								<span>Finalize</span>
+								<span>Complete</span>
 								<Icon>send</Icon>
 							</Button>
 						</div>)
