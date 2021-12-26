@@ -1,5 +1,15 @@
 .campaign{
     
+    .col{
+        &:first-child{
+            padding-left: 0;
+
+        }
+        &:last-child{
+            padding-right: 0;
+        }
+    }
+
     .card{
         
         .address-formatter-wrapper {
@@ -29,5 +39,10 @@
     .campaign {
         display: flex;
         flex-direction: column-reverse;
+        
+        .col{
+            padding-left: 0;
+            padding-right: 0;
+        }
     }
 }

@@ -22,10 +22,15 @@ class RequestService {
 				amount: request[1],
 				recipient: request[2],
 				finalized: request[3],
-				approvalCount: request[4],
-				approversCount: approversCount
+				approvalCount: parseInt(request[4]),
+				approversCount: parseInt(approversCount)
 			};
 		});
+	};
+
+	static hasApprovedRequest = (campaignAddress: string, approverAddress: string, index: number): Promise<boolean> => {
+		const campaign = CampaignService.getCamping(campaignAddress);
+		return campaign.methods.hasApprovedRequest(index, approverAddress).call();
 	};
 
 	static createRequest = async (
@@ -42,18 +47,18 @@ class RequestService {
 			.send({ from: accounts[0] });
 	};
 
-	static approveRequest = async (campaignAddress: string, index: string) => {
+	static approveRequest = async (campaignAddress: string, index: number) => {
 		const accounts = await Web3Service.provider.eth.getAccounts();
 		const campaign = CampaignService.getCamping(campaignAddress);
 
-		return campaign.methods.approveRequest(parseInt(index)).send({ from: accounts[0] });
+		return campaign.methods.approveRequest(index).send({ from: accounts[0] });
 	};
 
-	static finalizeRequest = async (campaignAddress: string, index: string) => {
+	static finalizeRequest = async (campaignAddress: string, index: number) => {
 		const accounts = await Web3Service.provider.eth.getAccounts();
 		const campaign = CampaignService.getCamping(campaignAddress);
 
-		return campaign.methods.finalizeRequest(parseInt(index)).send({ from: accounts[0] });
+		return campaign.methods.finalizeRequest(index).send({ from: accounts[0] });
 	};
 }
 

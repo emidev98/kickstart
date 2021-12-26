@@ -1,10 +1,12 @@
-interface IRequest {
+export default interface IRequest {
 	description: string;
 	amount: string;
 	recipient: string;
 	finalized: boolean;
-	approvalCount: string;
-	approversCount: string;
+	approvalCount: number;
+	approversCount: number;
 }
 
-export default IRequest;
+export interface IRequestRow extends IRequest{
+	isApprovedByAddress?: boolean;
+}

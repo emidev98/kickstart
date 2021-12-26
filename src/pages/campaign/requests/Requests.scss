@@ -1,12 +1,36 @@
-.requests {
-    overflow: auto;
-    padding: 0;
+@import "../../../assets/variables";
 
-    th {
+.requests {
+    
+    .requests-head{
+        min-height: auto;
+
+        h5{
+            display: flex;
+            align-items: center;
+
+            a{
+                display: flex;
+                color: $text-color;
+                
+                i{
+                    cursor: pointer;
+                    margin: 0.04em 0.5em 0 0;
+                }
+            }
+        }
+    }
+
+    .requests-body {
+        overflow: auto;
+        padding: 0;
+
+        th {
         
-        &:first-child{
-            padding: 1em;
-            
+            &:first-child{
+                padding: 1em;
+                
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
+import _ from "lodash";
 import React from "react";
-import { Card, Table } from "react-materialize";
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { Card, Icon, Table } from "react-materialize";
+import { Link, NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import RequestRow from "../../../components/RequestRow/RequestRow";
+import { IRequestRow } from "../../../models/IRequest";
 import BlockchainService from "../../../services/BlockchainService";
 import CampaignService from "../../../services/CampaignService";
 import LoaderService from "../../../services/LoaderService";
@@ -22,24 +24,38 @@ function Requests() {
 }
 class RequestsComponent extends React.Component<Props> {
 	state = {
-		requests: [],
+		requests: [] as Array<IRequestRow>,
 		account: "",
-		managerAccount: ""
+		campaignTitle: "",
+		managerAddress: ""
 	};
 
 	componentDidMount = async () => {
 		LoaderService.loading(true);
-
+		const { campaignAddress } = this.props;
 		Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
 
 		try {
-			const managerAccount = CampaignService.getCampingManager(this.props.campaignAddress);
-			const requests = await RequestService.getCampingRequests(this.props.campaignAddress);
+			const data = await Promise.all([
+				CampaignService.getCampingManager(campaignAddress),
+				CampaignService.getCampingTitle(campaignAddress),
+				RequestService.getCampingRequests(campaignAddress)
+			])
+			const managerAddress = data[0]
+			const campaignTitle = data[1]
+			const requests = _.map(data[2], request =>{
+				return {
+					...request,
+					isApprovedByAddress: false
+				} as IRequestRow;
+			});
+
 			this.setState({
 				requests,
-				managerAccount
+				campaignTitle,
+				managerAddress
 			});
 		} catch (e) {
 			M.toast({ html: `This campaign does not exist on '${BlockchainService.selected.name}'` });
@@ -49,44 +65,73 @@ class RequestsComponent extends React.Component<Props> {
 	};
 
 	onApprove = async (index: number) => {
-		console.log(index);
+		LoaderService.loading(true);
+		try {
+			await RequestService.approveRequest(this.props.campaignAddress, index);
+			this.state.requests[index].isApprovedByAddress = true;
+			this.state.requests[index].approvalCount++;
+			this.setState({requests: this.state.requests })
+		}
+		catch(err) {
+			const { message } = err as Error;
+			M.toast({html : message})
+		}
+		LoaderService.loading(false);
 	};
+
 	onFinalize = async (index: number) => {
-		console.log(index);
+		LoaderService.loading(true);
+		try {
+			await RequestService.finalizeRequest(this.props.campaignAddress, index);
+			this.state.requests[index].finalized = true;
+			this.setState({requests: this.state.requests })
+		}
+		catch(err) {
+			const { message } = err as Error;
+			M.toast({html : message})
+		}
+		LoaderService.loading(false);
 	};
 
 	render = () => {
 		return (
-			<Card className="requests">
-				<Table>
-					<thead>
-						<tr>
-							<th data-field="id">ID</th>
-							<th data-field="description">Description</th>
-							<th data-field="amount">Amount</th>
-							<th data-field="recipient">Recipient</th>
-							<th data-field="approval" className="center">
-								Approvals
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{this.state.requests.map((request, index) => {
-							return (
-								<RequestRow
-									id={index}
-									key={index}
-									request={request}
-									isContributorAccount={true}
-									isManagerAccount={true}
-									onApprove={() => this.onApprove(index)}
-									onFinalize={() => this.onFinalize(index)}
-								/>
-							);
-						})}
-					</tbody>
-				</Table>
-			</Card>
+			<div className="requests">
+				<Card className="requests-head">
+					<h5>
+						<Link to={`/campaigns/${this.props.campaignAddress}`}>
+							<Icon>chevron_left</Icon>
+							<span>Requests |&nbsp;</span>
+						</Link>
+						<span>{this.state.campaignTitle}</span>
+					</h5>
+				</Card>
+
+				<Card className="requests-body">
+					<Table>
+						<thead>
+							<tr>
+								<th data-field="id">ID</th>
+								<th data-field="description">Description</th>
+								<th data-field="amount">Amount</th>
+								<th data-field="recipient">Recipient</th>
+								<th data-field="approval" className="center">Approvals</th>
+							</tr>
+						</thead>
+						<tbody>
+							{this.state.requests.map((request, index) => {
+								return <RequestRow id={index}
+											key={index}
+											request={request}
+											campaignAddress={this.props.campaignAddress}
+											managerAddress={this.state.managerAddress}
+											account={this.state.account}
+											onApprove={() => this.onApprove(index)}
+											onFinalize={() => this.onFinalize(index)}/>
+							})}
+						</tbody>
+					</Table>
+				</Card>
+			</div>
 		);
 	};
 }

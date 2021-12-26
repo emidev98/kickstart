@@ -8,6 +8,11 @@ class CampaignService {
 		return new Web3Service.provider.eth.Contract(contractInterface, address);
 	};
 
+	static getCampingTitle = async (address: string) => {
+		const campaign = CampaignService.getCamping(address);
+		return campaign.methods.title().call();
+	};
+
 	static getCampingManager = async (address: string) => {
 		const campaign = CampaignService.getCamping(address);
 		return campaign.methods.manager().call();
