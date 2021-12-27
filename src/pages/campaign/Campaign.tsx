@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card, Col, Icon, Row } from "react-materialize";
 import { Link, NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { Subscription } from "rxjs";
 import AddressFormatter from "../../components/Address/AddressFormatter";
 import ContributeForm from "../../components/ContributeForm/ContributeForm";
 import { ICampaign } from "../../models/ICampaign";
@@ -23,6 +24,8 @@ function Campaign() {
 }
 
 class CampaignComponent extends React.Component<Props> {
+	
+	accountSubscription?: Subscription;
 	state = {
 		account: "",
 		campaign: {
@@ -40,7 +43,7 @@ class CampaignComponent extends React.Component<Props> {
 	componentDidMount = async () => {
 		LoaderService.loading(true);
 
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
 		try {
@@ -53,6 +56,10 @@ class CampaignComponent extends React.Component<Props> {
 		LoaderService.loading(false);
 	};
 
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
+	};
+	
 	onContributeSuccessfully = async () => {
 		const campaign = await CampaignService.getCampingSummary(this.props.address);
 		this.setState({ campaign });

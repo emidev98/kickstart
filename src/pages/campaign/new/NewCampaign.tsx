@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { BaseSyntheticEvent, FormEvent } from "react";
 import { Button, Card, CardPanel, Col, Icon, Row, Textarea, TextInput } from "react-materialize";
 import { useNavigate, NavigateFunction } from "react-router-dom";
+import { Subscription } from "rxjs";
 import BlockchainService from "../../../services/BlockchainService";
 import CampaignFactory from "../../../services/CampaignFactory";
 import LoaderService from "../../../services/LoaderService";
@@ -19,6 +20,8 @@ function NewCampaign() {
 }
 
 class NewCampaignComponent extends React.Component<Props> {
+	
+	accountSubscription?: Subscription;
 	state = {
 		title: {
 			value: "",
@@ -35,9 +38,13 @@ class NewCampaignComponent extends React.Component<Props> {
 	};
 
 	componentDidMount = () => {
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
+	};
+
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
 	};
 
 	validateForm = (event: BaseSyntheticEvent) => {

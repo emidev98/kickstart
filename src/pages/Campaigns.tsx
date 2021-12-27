@@ -8,8 +8,11 @@ import { Button } from "react-materialize";
 import LoaderService from "../services/LoaderService";
 import AddressFormatter from "../components/Address/AddressFormatter";
 import Web3Service from "../services/Web3Service";
+import { Subscription } from "rxjs";
 
 class Campaigns extends React.Component {
+
+	accountSubscription?: Subscription;
 	state = {
 		campaigns: new Array<ICampaign>(),
 		account: ""
@@ -21,12 +24,16 @@ class Campaigns extends React.Component {
 		const campaigns = await campaignFactory.methods.getDeployedCampaigns().call();
 		const campaignsSummary = await CampaignService.getCampingsSummary(campaigns);
 
-		Web3Service.account.subscribe((address) => {
+		this.accountSubscription = Web3Service.account.subscribe((address) => {
 			this.setState({ account: address });
 		});
 
 		this.setState({ campaigns: campaignsSummary });
 		LoaderService.loading(false);
+	};
+
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
 	};
 
 	render = () => {
