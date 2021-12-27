@@ -7,6 +7,7 @@ interface IBlockchain {
 	chainId: string;
 	icon: string;
 	version: number;
+	decimals: number;
 	selected?: boolean;
 }
 

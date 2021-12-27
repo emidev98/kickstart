@@ -7,6 +7,7 @@
 		"currency": "ether",
 		"chainId": "0x1",
 		"icon": "ethereum",
+		"decimals" : 18,
 		"version": 1
 	},
 	{
@@ -17,8 +18,9 @@
 		"currency": "ether",
 		"chainId": "0x4",
 		"icon": "ethereum",
-		"version": 1,
-		"selected": true
+		"selected" : true,
+		"decimals" : 18,
+		"version": 1
 	},
 	{
 		"name": "Harmony",
@@ -28,6 +30,7 @@
 		"currency": "one",
 		"chainId": "0x63564c40",
 		"icon": "harmony",
+		"decimals" : 18,
 		"version": 1
 	},
 	{
@@ -38,6 +41,7 @@
 		"currency": "one",
 		"chainId": "0x6357d2e0",
 		"icon": "harmony",
+		"decimals" : 18,
 		"version": 1
 	},
 	{
@@ -48,6 +52,7 @@
 		"currency": "Matic",
 		"chainId": "0x89",
 		"icon": "polygon",
+		"decimals" : 18,
 		"version": 1
 	},
 	{
@@ -58,6 +63,7 @@
 		"currency": "Matic",
 		"chainId": "0x13881",
 		"icon": "polygon",
+		"decimals" : 18,
 		"version": 1
 	}
 ]
