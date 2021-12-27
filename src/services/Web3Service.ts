@@ -2,6 +2,7 @@ import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import BlockchainService from "./BlockchainService";
 import { BehaviorSubject } from "rxjs";
+import _ from "lodash";
 
 export default class Web3Service {
 	static provider: any;
@@ -13,14 +14,44 @@ export default class Web3Service {
 		return this.connectMetamask();
 	}
 
-	static switchNetwork(chainId: string) {
-		BlockchainService.select(chainId);
+	static async switchNetwork(chainId: string) {
 		if (this.account.value) {
-			(window as any).ethereum.request({
-				method: "wallet_switchEthereumChain",
-				params: [{ chainId: chainId }]
-			});
-		} else {
+			try {
+				await (window as any).ethereum.request({
+					method: 'wallet_switchEthereumChain',
+					params: [{ chainId }],
+				});
+				BlockchainService.select(chainId);
+			} 
+			catch (err) {
+				const { code } = err as {code : number, message: string, stack: string};
+				// This error code indicates that the chain has not been added to MetaMask.
+				if (code === 4902) {
+					try {
+						const blockchain = _.find(BlockchainService.blockchains,(b) => b.chainId === chainId);
+
+						await (window as any).ethereum.request({
+							method: 'wallet_addEthereumChain',
+							params: [{ 
+								chainId: blockchain?.chainId,
+								chainName: blockchain?.name,
+								rpcUrls: [blockchain?.url],
+								blockExplorerUrls: [blockchain?.contractExplorer],
+								nativeCurrency: {
+									name: blockchain?.currency,
+									symbol:  blockchain?.currency,
+									decimals: blockchain?.decimals 
+								}
+							}]
+						});
+					} catch (err) {
+						const { message } = err as {code : number, message: string, stack: string};
+						M.toast({html: message});
+					}
+				}
+			}
+		}
+		else {
 			this.connectProvider();
 			window.location.reload();
 		}
