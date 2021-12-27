@@ -1,23 +1,101 @@
-.campaign{
-    
-    .col{
-        &:first-child{
-            padding-left: 0;
+.campaign {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "header header header header header"
+        "viewRequests viewRequests balance requests minimumContribution"
+        "contribute contribute managerAddress managerAddress managerAddress"
+        "newRequest newRequest contractAddress contractAddress contractAddress";
+    gap: 1em;
 
-        }
-        &:last-child{
-            padding-right: 0;
-        }
+    @media only screen and (max-width : 1200px) {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas: "header header header"
+            "viewRequests viewRequests contribute"
+            "newRequest newRequest contribute"
+            "requests balance minimumContribution"
+            "managerAddress managerAddress managerAddress"
+            "contractAddress contractAddress contractAddress";
     }
 
+    @media only screen and (max-width : 700px) {
+        grid-template-columns: auto;
+        grid-template-areas: "header"
+            "viewRequests"
+            "contribute"
+            "newRequest"
+            "balance"
+            "requests"
+            "minimumContribution"
+            "managerAddress"
+            "contractAddress";
+
+            .card {
+
+                .address-formatter-wrapper {
+                    max-width: 300px;
+                }
+            }
+    }
+    
+    .card-page-header {
+        grid-area: header;
+    }
+    
+    .card-minimum-contribution {
+        grid-area: minimumContribution;
+    }
+
+    .card-balance {
+        grid-area: balance;
+    }
+
+    .card-contract-address {
+        grid-area: contractAddress;
+    }
+
+    .card-manager-address {
+        grid-area: managerAddress;
+    }
+
+    .card-requests {
+        grid-area: requests;
+    }
+
+    .card-contribute {
+        grid-area: contribute;
+    }
+
+    .card-view-requests {
+        grid-area: viewRequests;
+    }
+
+    .card-new-request {
+        grid-area: newRequest;
+    }
+    
     .card{
+        margin: 0;
+        padding: 1em;
         
+        .card-title{
+            font-size: 20px;
+
+        }
+
         .address-formatter-wrapper {
             display: flex;
+            flex-direction: column;
+            
+            .address-formatter {
+                margin-bottom: 0.5em;
+
+            }
         }
         
-        &.view-requests,
-        &.new-request {
+        &.card-view-requests,
+        &.card-new-request {
             
             .btn {    
                 margin-top: 1.5em;
@@ -31,18 +109,6 @@
 
                 }
             }
-        }
-    }
-}
-
-@media only screen and (max-width : 992px) {
-    .campaign {
-        display: flex;
-        flex-direction: column-reverse;
-        
-        .col{
-            padding-left: 0;
-            padding-right: 0;
         }
     }
 }
