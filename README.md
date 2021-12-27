@@ -10,7 +10,7 @@ This project is structured as monorepo including both EVM compatible smart contr
 
 ```
 .
-├── contracts                # Smart contracts and relevant blockchain stored
+├── contracts                # Smart contracts and interfaces
 ├── public                   # Website public folder used for static assets
 ├── src
 │   ├── assets               # App specific assets like SASS, icons...

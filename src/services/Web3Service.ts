@@ -44,7 +44,9 @@ export default class Web3Service {
 								}
 							}]
 						});
-					} catch (err) {
+						BlockchainService.select(chainId);
+					}
+					catch (err) {
 						const { message } = err as {code : number, message: string, stack: string};
 						M.toast({html: message});
 					}
