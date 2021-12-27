@@ -20,7 +20,7 @@ This project is structured as monorepo including both EVM compatible smart contr
 │   ├── pages                # Components used as individual pages
 │   └── services             # Static serices to simplify logic across the app
 └── test
-    ├── contracts            # Smar contract tests
+    ├── contracts            # Smart contract tests
     └── ui                   # Frontend tests
 ```
 
