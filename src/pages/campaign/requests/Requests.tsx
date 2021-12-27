@@ -1,8 +1,9 @@
 import _ from "lodash";
 import React from "react";
-import { Card, Icon, Table } from "react-materialize";
-import { Link, NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { Card, Table } from "react-materialize";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { Subscription } from "rxjs";
+import PageHeader from "../../../components/PageHeader/PageHeader";
 import RequestRow from "../../../components/RequestRow/RequestRow";
 import { IRequestRow } from "../../../models/IRequest";
 import BlockchainService from "../../../services/BlockchainService";
@@ -102,16 +103,9 @@ class RequestsComponent extends React.Component<Props> {
 	render = () => {
 		return (
 			<div className="requests">
-				<Card className="requests-head">
-					<h5>
-						<Link to={`/campaigns/${this.props.campaignAddress}`}>
-							<Icon>chevron_left</Icon>
-							<span>Requests |&nbsp;</span>
-						</Link>
-						<span>{this.state.campaignTitle}</span>
-					</h5>
-				</Card>
-
+				<PageHeader backToUrl={`/campaigns/${this.props.campaignAddress}`}
+					backTitle="Requests | "
+					title={`${this.state.campaignTitle}`}/>
 				<Card className="requests-body">
 					<Table>
 						<thead>

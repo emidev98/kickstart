@@ -1,0 +1,29 @@
+@import "../../assets/variables";
+
+.page-header {
+    min-height: auto;
+    
+    .card-content>div {
+        display: flex;
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            color: $text-color;
+
+            .back-icon {
+                margin-top: 0.04em;
+                margin-right: 0.5em;
+            }
+
+            .back-title {
+                margin: 0;
+
+            }
+        }
+
+        .page-title {
+            margin: 0;
+        }
+    }
+}
