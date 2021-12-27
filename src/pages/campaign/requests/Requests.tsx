@@ -2,6 +2,7 @@ import _ from "lodash";
 import React from "react";
 import { Card, Icon, Table } from "react-materialize";
 import { Link, NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { Subscription } from "rxjs";
 import RequestRow from "../../../components/RequestRow/RequestRow";
 import { IRequestRow } from "../../../models/IRequest";
 import BlockchainService from "../../../services/BlockchainService";
@@ -23,6 +24,7 @@ function Requests() {
 	return <RequestsComponent campaignAddress={address ? address : ""} navigate={navigate} />;
 }
 class RequestsComponent extends React.Component<Props> {
+	accountSubscription?: Subscription;
 	state = {
 		requests: [] as Array<IRequestRow>,
 		account: "",
@@ -33,7 +35,7 @@ class RequestsComponent extends React.Component<Props> {
 	componentDidMount = async () => {
 		LoaderService.loading(true);
 		const { campaignAddress } = this.props;
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
 
@@ -62,6 +64,10 @@ class RequestsComponent extends React.Component<Props> {
 			this.props.navigate("/");
 		}
 		LoaderService.loading(false);
+	};
+
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
 	};
 
 	onApprove = async (index: number) => {

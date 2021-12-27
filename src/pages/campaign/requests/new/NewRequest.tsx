@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { BaseSyntheticEvent, FormEvent } from "react";
 import { Button, Card, CardPanel, Col, Row, Textarea, TextInput } from "react-materialize";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { Subscription } from "rxjs";
 import AddressFormatter from "../../../../components/Address/AddressFormatter";
 import BlockchainService from "../../../../services/BlockchainService";
 import CampaignService from "../../../../services/CampaignService";
@@ -23,6 +24,7 @@ function NewRequest() {
 }
 
 class NewRequestComponent extends React.Component<Props> {
+	accountSubscription?: Subscription;
 	state = {
 		description: {
 			value: "",
@@ -51,9 +53,13 @@ class NewRequestComponent extends React.Component<Props> {
 			M.toast({ html: `This campaign does not exist on '${BlockchainService.selected.name}'` });
 			this.props.navigate("/");
 		}
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
+	};
+
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
 	};
 
 	onSubmit = async (event: FormEvent) => {

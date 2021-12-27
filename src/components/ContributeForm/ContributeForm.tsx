@@ -6,6 +6,7 @@ import Web3Service from "../../services/Web3Service";
 import _ from "lodash";
 import CampaignService from "../../services/CampaignService";
 import LoaderService from "../../services/LoaderService";
+import { Subscription } from "rxjs";
 
 type Props = {
 	minimumContribution: string;
@@ -14,6 +15,8 @@ type Props = {
 };
 
 export default class ContributeForm extends React.Component<Props> {
+
+	accountSubscription?: Subscription;
 	state = {
 		contribution: "0",
 		account: "",
@@ -21,9 +24,13 @@ export default class ContributeForm extends React.Component<Props> {
 	};
 
 	componentDidMount = async () => {
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
+	};
+
+	componentWillUnmount = () => {
+		this.accountSubscription?.unsubscribe();
 	};
 
 	onSubmit = async (event: FormEvent) => {

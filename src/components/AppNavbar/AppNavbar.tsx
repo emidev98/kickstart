@@ -9,8 +9,12 @@ import Web3Service from "../../services/Web3Service";
 import M from "materialize-css";
 import LoaderService from "../../services/LoaderService";
 import AddressFormatter from "../Address/AddressFormatter";
+import { Subscription } from "rxjs";
 
 class AppNavbar extends React.Component {
+
+	accountSubscription?: Subscription;
+
 	state = {
 		selectedBlockchain: {
 			name: "",
@@ -29,13 +33,13 @@ class AppNavbar extends React.Component {
 			selectedBlockchain: BlockchainService.selected
 		});
 
-		Web3Service.account.subscribe((account) => {
+		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
 		});
 	};
 
 	componentWillUnmount = () => {
-		Web3Service.account.unsubscribe();
+		this.accountSubscription?.unsubscribe();
 	};
 
 	getContractExplorerUrl = () => {
