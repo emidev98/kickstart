@@ -1,10 +1,16 @@
 # Kickstart
 
-Its a fork from [decentryfi/courses/kickstart](https://github.com/decentryfi/courses/tree/main/kickstart). This project is created with the propose of allowing people financing campaigns based on contributors consensus, because in order to transfer funds the manager needs at least 50% of total contributors approvals. This is possible thanks to Smart Contracts that are deployed on many EVM compatible networks.
+The project [is hosted here](http://kickstart.decentryfi.xyz). It offers the opportunity to create totally transparent and consensual fund rising campaigns for your projects. Each time someone create a campaign is assigned as **manager** for that campaign. When someone donates to the campaign is considered as a **contributor** which gives the rights to vote for the **spending requests**. Each has one vote per spending request no matters how many times donate to the campaign nor how much that person donated.
 
-The project is available on [Ethereum](https://ethereum.org/en/) but as the transactions are very expensive (at time of creating the project 8-12-2021) to make it viable we needed to deploy it on [HarmonyOne](https://www.harmony.one/) and [Polygon](https://polygon.technology/).
+At the moment the project will be deployed on [HarmonyOne](https://www.harmony.one/) and [Polygon](https://polygon.technology/).
 
-# Project structure
+
+## Development
+
+To start the project locally you need to install  ```node 14.18.2``` and ```npm 8.1.4``` then you will be able to do an ```npm install``` on the root of the project and finally start the frontend with ```npm run start:ui```.
+
+
+## Project structure
 
 This project is structured as monorepo including both EVM compatible smart contracts and single page application created with ReactJs.
 
