@@ -49,16 +49,22 @@ class BlockchainService {
 	}
 
 	static select(chainId: string) {
-		const chains = _.map(BlockchainService.blockchains, (blockchain) => {
-			delete blockchain.selected;
-			return blockchain;
-		});
+		const currentChain = _.find(BlockchainService.blockchains, b => b.selected) as IBlockchain;
+		const newChain = _.find(BlockchainService.blockchains, b => b.chainId == chainId);
 
-		// TODO Throw expection if chain does not exist ?
-		const chain = _.find(chains, (blockchain) => blockchain.chainId == chainId) as IBlockchain;
-		chain.selected = true;
+		if(!_.isUndefined(newChain)){
+			const blockchains = _.map(BlockchainService.blockchains, b =>{
+				if(currentChain.chainId === b.chainId) b.selected = false;
 
-		LocalStorageService.setItem("blockchains", chains);
+				if(newChain.chainId === b.chainId) b.selected = true;
+				
+				return b;
+			});
+			LocalStorageService.setItem("blockchains", blockchains);
+		}
+		else {
+			throw Error(`Selected Metamask network is not supported, switching to ${currentChain.name}`);
+		}
 	}
 
 	static get selected(): IBlockchain {
@@ -73,6 +79,10 @@ class BlockchainService {
 
 	static get selectedAddress() {
 		return BlockchainService.selected.contractAddress;
+	}
+	
+	static isSupported(chainId: string){
+		return !!BlockchainService.blockchains.find(b => b.chainId === chainId);
 	}
 }
 

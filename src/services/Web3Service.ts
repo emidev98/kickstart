@@ -7,10 +7,11 @@ import _ from "lodash";
 export default class Web3Service {
 	static provider: any;
 	static account = new BehaviorSubject("");
+	static chain = new BehaviorSubject("");
 	static eventListenersAvailable = false;
 
 	static init() {
-		this.connectProvider();
+		this.connectStandardProvider();
 		return this.connectMetamask();
 	}
 
@@ -21,61 +22,68 @@ export default class Web3Service {
 					method: 'wallet_switchEthereumChain',
 					params: [{ chainId }],
 				});
-				BlockchainService.select(chainId);
-			} 
+				return true;
+			}
 			catch (err) {
-				const { code } = err as {code : number, message: string, stack: string};
+				const { code } = err as { code: number, message: string, stack: string };
 				// This error code indicates that the chain has not been added to MetaMask.
 				if (code === 4902) {
 					try {
-						const blockchain = _.find(BlockchainService.blockchains,(b) => b.chainId === chainId);
+						const blockchain = _.find(BlockchainService.blockchains, (b) => b.chainId === chainId);
 
 						await (window as any).ethereum.request({
 							method: 'wallet_addEthereumChain',
-							params: [{ 
+							params: [{
 								chainId: blockchain?.chainId,
 								chainName: blockchain?.name,
 								rpcUrls: [blockchain?.url],
 								blockExplorerUrls: [blockchain?.contractExplorer],
 								nativeCurrency: {
 									name: blockchain?.currency,
-									symbol:  blockchain?.currency,
-									decimals: blockchain?.decimals 
+									symbol: blockchain?.currency,
+									decimals: blockchain?.decimals
 								}
 							}]
 						});
-						BlockchainService.select(chainId);
+						return true;
 					}
 					catch (err) {
-						const { message } = err as {code : number, message: string, stack: string};
-						M.toast({html: message});
+						return false;
 					}
 				}
 			}
 		}
 		else {
-			this.connectProvider();
-			window.location.reload();
+			this.connectStandardProvider();
+			return true;
 		}
 	}
 
-	static connectProvider() {
+	static connectStandardProvider() {
 		const provider = new Web3.providers.HttpProvider(BlockchainService.selected.url);
 		this.provider = new Web3(provider);
 	}
 
 	static async connectMetamask(shouldRaiseError?: boolean) {
 		const provider = (await detectEthereumProvider()) as any;
-
 		if (provider) {
-			this.provider = new Web3(provider);
+			const web3Provider = new Web3(provider);
+			const metamaskSelectedChain = "0x" + (await web3Provider.eth.getChainId()).toString(16);
 			const account = await provider.request({ method: "eth_requestAccounts" });
 			this.account.next(account[0]);
 
-			if (!this.eventListenersAvailable) {
-				this.addEventListeners();
+			if (BlockchainService.isSupported(metamaskSelectedChain)) {
+				if (!this.eventListenersAvailable) {
+					this.addEventListeners();
+				}
+				this.provider = web3Provider;
+				BlockchainService.select(metamaskSelectedChain);
 			}
-		} else if (shouldRaiseError) throw Error("Metamask not available");
+			else {
+				await this.switchNetwork(BlockchainService.selected.chainId)
+			}
+		}
+		else if (shouldRaiseError) throw Error("Metamask not available");
 	}
 
 	private static addEventListeners() {
@@ -84,9 +92,26 @@ export default class Web3Service {
 			this.account.next(account[0]);
 		});
 
-		(<any>window).ethereum.on("chainChanged", (chainId: any) => {
-			BlockchainService.select(chainId);
-			window.location.reload();
+		(<any>window).ethereum.on("chainChanged", async (chainId: any) => {
+			const metamaskSelectedChain = "0x" + (await this.provider?.eth.getChainId())?.toString(16);
+			console.log(metamaskSelectedChain);
+			try {
+				if (BlockchainService.isSupported(metamaskSelectedChain)) {
+					this.chain.next(chainId);
+					BlockchainService.select(chainId);
+					window.location.reload();
+				}
+				else {
+					this.account.next("");
+					this.provider = this.connectStandardProvider();
+					this.chain.next(chainId);
+				}
+
+			}
+			catch (err) {
+				const { message } = err as Error;
+				M.toast({ html: message })
+			}
 		});
 	}
 }
