@@ -9,6 +9,7 @@ import LoaderService from "../services/LoaderService";
 import AddressFormatter from "../components/Address/AddressFormatter";
 import Web3Service from "../services/Web3Service";
 import { Subscription } from "rxjs";
+import BlockchainService from "../services/BlockchainService";
 
 class Campaigns extends React.Component {
 
@@ -20,15 +21,21 @@ class Campaigns extends React.Component {
 
 	componentDidMount = async () => {
 		LoaderService.loading(true);
-		const campaignFactory = CampaignFactory.getCampingFactory();
-		const campaigns = await campaignFactory.methods.getDeployedCampaigns().call();
-		const campaignsSummary = await CampaignService.getCampingsSummary(campaigns);
-
 		this.accountSubscription = Web3Service.account.subscribe((address) => {
 			this.setState({ account: address });
 		});
 
-		this.setState({ campaigns: campaignsSummary });
+		try{
+			const campaignFactory = CampaignFactory.getCampingFactory();
+			const campaigns = await campaignFactory.methods.getDeployedCampaigns().call();
+			const campaignsSummary = await CampaignService.getCampingsSummary(campaigns);
+			this.setState({ campaigns: campaignsSummary });
+		}
+		catch(e){
+			// TODO ? 
+			
+		}
+
 		LoaderService.loading(false);
 	};
 

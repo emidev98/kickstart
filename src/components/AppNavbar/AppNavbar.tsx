@@ -14,7 +14,7 @@ import { Subscription } from "rxjs";
 class AppNavbar extends React.Component {
 
 	accountSubscription?: Subscription;
-
+	chainSubscription?: Subscription;
 	state = {
 		selectedBlockchain: {
 			name: "",
@@ -29,17 +29,20 @@ class AppNavbar extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.setState({
-			selectedBlockchain: BlockchainService.selected
-		});
-
 		this.accountSubscription = Web3Service.account.subscribe((account) => {
 			this.setState({ account });
+		});
+
+		this.chainSubscription = Web3Service.chain.subscribe((chainId) => {
+			this.setState({
+				selectedBlockchain: BlockchainService.selected
+			});
 		});
 	};
 
 	componentWillUnmount = () => {
 		this.accountSubscription?.unsubscribe();
+		this.chainSubscription?.unsubscribe();
 	};
 
 	getContractExplorerUrl = () => {
@@ -48,10 +51,22 @@ class AppNavbar extends React.Component {
 		return contractExplorer + "address/" + this.state.selectedBlockchain.contractAddress;
 	};
 
-	onSelectBlockchain = (blockchain: IBlockchain) => {
-		if (blockchain.selected) return;
+	onSelectBlockchain = async (blockchain: IBlockchain) => {
+		const { selected, chainId } = blockchain;
+		if (selected) return;
 
-		Web3Service.switchNetwork(blockchain.chainId);
+		const switchedSuccessfully = await Web3Service.switchNetwork(chainId);
+		if(switchedSuccessfully){
+			try{
+				BlockchainService.select(chainId);
+				window.location.reload();
+			}
+			catch(err){
+				console.log(err)
+				const { message } = err as Error;
+				M.toast({html: message});
+			}
+		}
 	};
 
 	onConnect = async () => {
