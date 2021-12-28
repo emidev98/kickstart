@@ -4,6 +4,7 @@ import { Button, Card, CardPanel, Col, Row, Textarea, TextInput } from "react-ma
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { Subscription } from "rxjs";
 import AddressFormatter from "../../../../components/Address/AddressFormatter";
+import PageHeader from "../../../../components/PageHeader/PageHeader";
 import BlockchainService from "../../../../services/BlockchainService";
 import CampaignService from "../../../../services/CampaignService";
 import LoaderService from "../../../../services/LoaderService";
@@ -26,6 +27,7 @@ function NewRequest() {
 class NewRequestComponent extends React.Component<Props> {
 	accountSubscription?: Subscription;
 	state = {
+		campaignTitle : "",
 		description: {
 			value: "",
 			errorMessage: "",
@@ -48,7 +50,8 @@ class NewRequestComponent extends React.Component<Props> {
 
 	componentDidMount = async () => {
 		try {
-			await CampaignService.getCampingSummary(this.props.campaignAddress);
+			const campaign = await CampaignService.getCampingSummary(this.props.campaignAddress);
+			this.setState({campaignTitle : campaign.title})
 		} catch (e) {
 			M.toast({ html: `This campaign does not exist on '${BlockchainService.selected.name}'` });
 			this.props.navigate("/");
@@ -122,100 +125,100 @@ class NewRequestComponent extends React.Component<Props> {
 
 	render = () => {
 		return (
-			<Card
-				className="new-request"
-				header={
-					<div className="card-header">
-						<h5>New spending request for&nbsp;</h5>
-						<AddressFormatter address={this.props.campaignAddress} />
-					</div>
-				}
-			>
-				<Row>
-					<Col l={8} m={6} s={12}>
-						<form className="new-request-form" onSubmit={this.onSubmit}>
-							<Textarea
-								id="description"
-								disabled={!this.state.account}
-								value={this.state.description.value}
-								label={"* Description"}
-								className={`${this.state.description.errorMessage ? "invalid" : ""}`}
-								onChange={this.onInputChange}
-							/>
-							<CardPanel
-								className="error-panel"
-								style={{
-									display: this.state.description.errorMessage ? "block" : "none"
-								}}
-							>
-								{this.state.description.errorMessage}
-							</CardPanel>
-							<TextInput
-								id="amount"
-								disabled={!this.state.account}
-								value={this.state.amount.value}
-								label={`* Amount (in ${BlockchainService.selected.currency})`}
-								inputClassName={`${this.state.amount.errorMessage ? "invalid" : ""}`}
-								onChange={this.onInputChange}
-							/>
-							<CardPanel
-								className="error-panel"
-								style={{
-									display: this.state.amount.errorMessage ? "block" : "none"
-								}}
-							>
-								{this.state.amount.errorMessage}
-							</CardPanel>
-							<TextInput
-								id="recipientAddress"
-								disabled={!this.state.account}
-								value={this.state.recipientAddress.value}
-								label={"* Recipient address"}
-								inputClassName={`${this.state.recipientAddress.errorMessage ? "invalid" : ""}`}
-								onChange={this.onInputChange}
-							/>
-							<CardPanel
-								className="error-panel"
-								style={{
-									display: this.state.recipientAddress.errorMessage ? "block" : "none"
-								}}
-							>
-								{this.state.recipientAddress.errorMessage}
-							</CardPanel>
-							<Button
-								className="submit-form"
-								disabled={
-									!this.state.description.isValid ||
-									!this.state.amount.isValid ||
-									!this.state.recipientAddress.isValid
-								}
-							>
-								<i className="material-icons">add</i>
-								Create spending request
-							</Button>
-						</form>
-					</Col>
+			<div className="new-request">
 
-					<Col l={4} m={6} s={12}>
-						<ul className="info-list">
-							<li>
-								Spending requests must have a <b>description</b> to inform the contributors what is the
-								scope of that request so they can approve.
-							</li>
+				<PageHeader backToUrl={`/campaigns/${this.props.campaignAddress}`}
+					backTitle="New Request | "
+					title={`${this.state.campaignTitle}`}/>
 
-							<li>
-								The <b>amount</b> is represented in <b>{BlockchainService.selected.currency}</b>. It can
-								only be transferred when the spending request is approved by at least 50% of
-								contributors.
-							</li>
+				<Card className="new-request-body">
+					<Row>
+						<Col l={8} m={6} s={12}>
+							<form className="new-request-form" onSubmit={this.onSubmit}>
+								<Textarea
+									id="description"
+									disabled={!this.state.account}
+									value={this.state.description.value}
+									label={"* Description"}
+									className={`${this.state.description.errorMessage ? "invalid" : ""}`}
+									onChange={this.onInputChange}
+								/>
+								<CardPanel
+									className="error-panel"
+									style={{
+										display: this.state.description.errorMessage ? "block" : "none"
+									}}
+								>
+									{this.state.description.errorMessage}
+								</CardPanel>
+								<TextInput
+									id="amount"
+									disabled={!this.state.account}
+									value={this.state.amount.value}
+									label={`* Amount (in ${BlockchainService.selected.currency})`}
+									inputClassName={`${this.state.amount.errorMessage ? "invalid" : ""}`}
+									onChange={this.onInputChange}
+								/>
+								<CardPanel
+									className="error-panel"
+									style={{
+										display: this.state.amount.errorMessage ? "block" : "none"
+									}}
+								>
+									{this.state.amount.errorMessage}
+								</CardPanel>
+								<TextInput
+									id="recipientAddress"
+									disabled={!this.state.account}
+									value={this.state.recipientAddress.value}
+									label={"* Recipient address"}
+									inputClassName={`${this.state.recipientAddress.errorMessage ? "invalid" : ""}`}
+									onChange={this.onInputChange}
+								/>
+								<CardPanel
+									className="error-panel"
+									style={{
+										display: this.state.recipientAddress.errorMessage ? "block" : "none"
+									}}
+								>
+									{this.state.recipientAddress.errorMessage}
+								</CardPanel>
+								<Button
+									className="submit-form"
+									disabled={
+										!this.state.description.isValid ||
+										!this.state.amount.isValid ||
+										!this.state.recipientAddress.isValid
+									}
+								>
+									<i className="material-icons">add</i>
+									Create spending request
+								</Button>
+							</form>
+						</Col>
 
-							<li>
-								<b>Recipient address</b> is where the amount will be send when you finalize the request.
-							</li>
-						</ul>
-					</Col>
-				</Row>
-			</Card>
+						<Col l={4} m={6} s={12}>
+							<ul className="info-list">
+								<li>
+									Spending requests must have a <b>description</b> to inform the contributors 
+									what is the scope of that request so they can approve.
+								</li>
+
+								<li>
+									The <b>amount</b> is represented in <b>{BlockchainService.selected.currency}</b>.
+									It can only be transferred when the spending request is approved by 
+									at least 50% of contributors.
+								</li>
+
+								<li>
+									<b>Recipient address</b> is where the amount will be send when you 
+									finalize the request.
+								</li>
+							</ul>
+						</Col>
+					</Row>
+				</Card>
+			</div>
 		);
 	};
 }
