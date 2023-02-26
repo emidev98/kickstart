@@ -1,6 +1,6 @@
 # Kickstart
 
-The project [is hosted here](http://kickstart.decentryfi.xyz). It offers the opportunity to create totally transparent and consensual fund rising campaigns for your projects. Each time someone create a campaign is assigned as **manager** for that campaign. When someone donates to the campaign is considered as a **contributor** which gives the rights to vote for the **spending requests**. Each has one vote per spending request no matters how many times donate to the campaign nor how much that person donated.
+The project [is hosted here](https://kickstart.emidev98.xyz/). It offers the opportunity to create totally transparent and consensual fund rising campaigns for your projects. Each time someone create a campaign is assigned as **manager** for that campaign. When someone donates to the campaign is considered as a **contributor** which gives the rights to vote for the **spending requests**. Each has one vote per spending request no matters how many times donate to the campaign nor how much that person donated.
 
 At the moment the project will be deployed on [HarmonyOne](https://www.harmony.one/) and [Polygon](https://polygon.technology/).
 
